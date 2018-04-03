@@ -6,6 +6,8 @@ import Router from 'vue-router'
 */
 const Index = resolve => require(['@/view/index'], resolve)
 const Details = resolve => require(['@/view/details'], resolve)
+const Praise = resolve => require(['@/view/praise'], resolve)
+const Evalmore = resolve => require(['@/view/evalmore'], resolve)
 
 Vue.use(Router)
 
@@ -20,7 +22,19 @@ export default new Router({
         {
           path: 'details',
           name: 'Details',
-          component: Details
+          component: Details,
+          children: [
+            {
+              path: 'praise',
+              name: 'Praise',
+              component: Praise
+            },
+            {
+              path: 'evalmore',
+              name: 'Evalmore',
+              component: Evalmore
+            }
+          ]
         }
       ]
     }
