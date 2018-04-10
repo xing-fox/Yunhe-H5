@@ -1,0 +1,1934 @@
+<?xml version="1.0" encoding="gbk"?>
+<application>
+	<!--支付宝上参数-->
+	<format code="notify" log_switch="1">
+		<request necessary="yes">
+			<item name="total_fee"  necessary="no" />
+			<item name="notify_id"  necessary="no" />
+			<item name="notify_time"  necessary="no" />
+			<item name="sign"  necessary="no" />
+			<item name="sign_type"  necessary="no" />
+			<item name="discount"  necessary="no" />
+			<item name="payment_type"  necessary="no" />
+			<item name="subject"  necessary="no" />
+			<item name="trade_no"  necessary="no" />
+			<item name="buyer_email"  necessary="no" />
+			<item name="gmt_create"  necessary="no" />
+			<item name="notify_type"  necessary="no" />
+			<item name="quantity"  necessary="no" />
+			<item name="out_trade_no"  necessary="no" />
+			<item name="seller_id"  necessary="no" />
+			<item name="notify_time"  necessary="no" />
+			<item name="body"  necessary="no" />
+			<item name="trade_status"  necessary="no" />
+			<item name="is_total_fee_adjust"  necessary="no" />
+			<item name="total_fee"  necessary="no" />
+			<item name="gmt_payment"  necessary="no" />
+			<item name="seller_email"  necessary="no" />
+			<item name="price"  necessary="no" />
+			<item name="buyer_id"  necessary="no" />
+			<item name="notify_id"  necessary="no" />
+			<item name="use_coupon"  necessary="no" />
+			<item name="sign_type"  necessary="no" />
+			<item name="sign"  necessary="no" />
+		</request>
+		<response necessary="no">
+			<group name="gda">
+				<!--<item name="msg_cd" necessary="no" />-->
+				<item name="msg_inf" necessary="no" />
+			</group>
+		</response>
+	</format>
+	<!--支付宝回调-->
+	<format code="alipaynotify">
+		<request necessary="yes">
+			<item name="notify_time"        necessary="no"/><!-- 通知的发送时间。格式为yyyy-MM-dd HH:mm:ss-->
+			<item name="notify_type"        necessary="no"/><!-- 通知的类型-->
+			<item name="notify_id"          necessary="no"/><!-- 通知校验ID。-->
+			<item name="app_id"             necessary="no"/><!-- 支付宝分配给开发者的应用Id-->
+			<item name="charset"            necessary="no"/><!-- 编码格式，如utf-8、gbk、gb2312等-->
+			<item name="version"            necessary="no"/><!-- 调用的接口版本，固定为：1.0-->
+			<item name="sign_type"          necessary="no"/><!-- 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2-->
+			<item name="sign"               necessary="no"/><!-- 签名-->
+			<item name="trade_no"           necessary="no"/><!-- 支付宝交易凭证号-->
+			<item name="out_trade_no"       necessary="no"/><!-- 原支付请求的商户订单号-->
+			<item name="out_biz_no"         necessary="no"/><!-- 商户业务ID，主要是退款通知中返回退款申请的流水号-->
+			<item name="buyer_id"           necessary="no"/><!-- 买家支付宝账号对应的支付宝唯一用户号。以2088开头的纯16位数字-->
+			<item name="buyer_logon_id"     necessary="no"/><!-- 买家支付宝账号-->
+			<item name="seller_id"          necessary="no"/><!-- 卖家支付宝用户号-->
+			<item name="seller_email"       necessary="no"/><!-- 商户业务ID，主要是退款通知中返回退款申请的流水号-->
+			<item name="trade_status"       necessary="no"/><!-- WAIT_BUYER_PAY	交易创建，等待买家付款
+															TRADE_CLOSED	未付款交易超时关闭，或支付完成后全额退款
+															TRADE_SUCCESS	交易支付成功
+															TRADE_FINISHED	交易结束，不可退款-->
+			<item name="total_amount"       necessary="no"/><!-- 本次交易支付的订单金额，单位为人民币（元）-->
+			<item name="receipt_amount"     necessary="no"/><!-- 商家在交易中实际收到的款项，单位为元-->
+			<item name="invoice_amount"     necessary="no"/><!-- 用户在交易中支付的可开发票的金额	-->
+			<item name="buyer_pay_amount"   necessary="no"/><!-- 用户在交易中支付的金额-->
+			<item name="point_amount"       necessary="no"/><!-- 退款通知中，返回总退款金额，单位为元，支持两位小数-->
+			<item name="refund_fee"         necessary="no"/><!-- 退款通知中，返回总退款金额，单位为元，支持两位小数-->
+			<item name="subject"            necessary="no"/><!-- 商品的标题/交易标题/订单标题/订单关键字等，是请求时对应的参数，原样通知回来-->
+			<item name="body"               necessary="no"/><!-- 该订单的备注、描述、明细等。对应请求时的body参数，原样通知回来-->
+			<item name="gmt_create"         necessary="no"/><!-- 该笔交易创建的时间。格式为yyyy-MM-dd HH:mm:ss-->
+			<item name="gmt_payment"        necessary="no"/><!-- 该笔交易的买家付款时间。格式为yyyy-MM-dd HH:mm:ss-->
+			<item name="gmt_refund"         necessary="no"/><!-- 该笔交易的退款时间。格式为yyyy-MM-dd HH:mm:ss.S-->
+			<item name="gmt_close"          necessary="no"/><!-- 该笔交易结束时间。格式为yyyy-MM-dd HH:mm:ss-->
+			<item name="fund_bill_list"     necessary="no"/><!-- 支付成功的各个渠道金额信息，详见资金明细信息说明-->
+			<item name="passback_params"    necessary="no"/><!-- 公共回传参数，如果请求时传递了该参数，则返回给商户时会在异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝-->
+			<item name="voucher_detail_list" necessary="no"/><!--本交易支付时所使用的所有优惠券信息，详见优惠券信息说明-->
+
+		</request>
+		<response necessary="yes">
+			<item name="address_id" necessary="no"/><!--地址id-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes"/> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes"/><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes"/><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--微信支付回调-->
+	<format code="wxpaynotify">
+		<request necessary="yes">
+			<item name="return_code" necessary="no"/><!--通信标识-->
+			<item name="appid"             necessary="no"/><!-- 应用Id-->
+			<item name="mch_id"             necessary="no"/><!--商户号-->
+			<item name="nonce_str"          necessary="no"/><!--随机字符串-->
+			<item name="sign"                necessary="no"/><!--签名-->
+			<item name="result_code"        necessary="no"/><!-- 业务结果-->
+			<item name="openid"           necessary="no"/><!--用户标识-->
+			<item name="trade_type"       necessary="no"/><!--交易类型-->
+			<item name="bank_type"       necessary="no"/><!--付款银行-->
+			<item name="total_fee"     necessary="no"/><!--订单总金额，单位为分-->
+			<item name="cash_fee"     necessary="no"/><!-- 现金支付金额-->
+			<item name="transaction_id"   necessary="no"/><!-- 微信支付订单号-->
+			<item name="out_trade_no"       necessary="no"/><!-- 商户订单号-->
+			<item name="time_end"         necessary="no"/><!-- 支付完成时间，格式为yyyyMMddHHmmss-->
+			<item name="device_info"         necessary="no"/>
+			<item name="err_code"         necessary="no"/>
+			<item name="err_code_des"         necessary="no"/>
+			<item name="is_subscribe"         necessary="no"/>
+			<item name="fee_type"         necessary="no"/>
+			<item name="cash_fee_type"         necessary="no"/>
+			<item name="coupon_fee"         necessary="no"/>
+			<item name="coupon_count"         necessary="no"/>
+			<item name="coupon_id_$n"         necessary="no"/>
+			<item name="coupon_fee_$n"         necessary="no"/>
+			<item name="attach"         necessary="no"/>
+		</request>
+		<response necessary="yes">
+			<item name="address_id" necessary="no"/><!--地址id-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes"/> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes"/><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes"/><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--微信支付回调-->
+	<format code="wxpubnotify">
+		<request necessary="yes">
+			<item name="ToUserName" necessary="no"/><!--开发者微信号-->
+			<item name="FromUserName" necessary="no"/><!--发送方帐号（一个OpenID）-->
+			<item name="CreateTime" necessary="no"/><!--消息创建时间 （整型）-->
+			<item name="MsgType" necessary="no"/><!--消息类型，event-->
+			<item name="Event" necessary="no"/><!--事件类型，subscribe-->
+			<item name="EventKey" necessary="no"/><!--事件KEY值，qrscene_为前缀，后面为二维码的参数值-->
+			<item name="Ticket" necessary="no"/><!--二维码的ticket，可用来换取二维码图片-->
+			<item name="signature" necessary="no"/><!--签名-->
+			<item name="nonce" necessary="no"/><!--签名-->
+			<item name="timestamp" necessary="no"/><!--签名-->
+		</request>
+		<response necessary="yes">
+			<item name="address_id" necessary="no"/><!--地址id-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes"/> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes"/><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes"/><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--账号登陆-验证码发送-->
+	<format code="identifycode">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--电话号码-->
+		</request>
+		<response necessary="no">
+			<item name="phone" necessary="yes" />
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--忘记密码-->
+	<format code="forgetpassword">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--电话号码-->
+			<item name="identifycode" necessary="yes" /><!--验证码-->
+			<item name="password" necessary="yes" /><!--用户密码-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--sessionid测试-->
+	<format code="getsessionid">
+		<request necessary="no">
+			<item name="sessionid" necessary="no" /><!--电话号码-->
+		</request>
+		<response necessary="no">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--登陆-->
+	<format code="customerlogin">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--电话号码-->
+			<item name="identifycode" necessary="yes" /><!--验证码-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+			<item name="wechat_id" necessary="no" /><!--微信登录时传递此字段-->
+			<item name="recommend_id" necessary="no" /><!--推荐人id-->
+			<item name="code" necessary="no" /><!--公众号登录时传入code值-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--免登陆-->
+	<format code="login">
+		<request necessary="yes">
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+			<item name="code" necessary="no" /><!--微信公众号登录时提供code值-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--用户注册-->
+	<format code="customerregist">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--电话号码-->
+			<item name="identifycode" necessary="yes" /><!--验证码-->
+			<item name="password" necessary="yes" /><!--用户密码-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--第三方登陆-微信-->
+	<format code="wechatlogin">
+		<request necessary="yes">
+			<item name="wechat_id"  necessary="yes" /><!--微信id-->
+			<item name="wechat_nick_name"  necessary="yes" /><!--微信昵称-->
+			<item name="portrait_url"  necessary="no" /><!--头像照片地址-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--第三方登陆-微博-->
+	<format code="microbloglogin">
+		<request necessary="yes">
+			<item name="microblog_nick_name"  necessary="yes" /><!--微博昵称-->
+			<item name="microblog_id"  necessary="yes" /><!--微博id-->
+			<item name="portrait_url"  necessary="yes" /><!--头像照片地址-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--微信小程序登录-->
+	<format code="wxinlogin">
+		<request necessary="yes">
+			<item name="wechat_id"  necessary="no" /><!--微信id-->
+			<item name="wechat_nick_name"  necessary="no" /><!--微信昵称-->
+			<item name="portrait_url"  necessary="no" /><!--头像照片地址-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+			<item name="code" necessary="yes"/><!--登录凭证-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<item name="third_session" necessary="yes"/><!--3rd_session-->
+			<item name="unionid" necessary="no"/><!--unionid-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--微信小程序授权登录,以便后续的绑定时同时获取unionid和openid-->
+	<format code="wxonlylogin">
+		<request necessary="yes">
+			<item name="code" necessary="yes"/><!--登录凭证-->
+			<item name="rawData" necessary="no"/><!--数据-->
+			<item name="signature" necessary="no"/><!--签名-->
+			<item name="encryptedData" necessary="no"/><!--加密数据-->
+			<item name="iv" necessary="no"/><!--登录凭证-->
+		</request>
+		<response necessary="no">
+			<item name="unionid" necessary="no"/><!--unionid-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	//微信分享获取access_token
+	<format code="wxshareauthorize">
+		<request necessary="yes">
+			<item name="code" necessary="no"/><!--登录凭证-->
+			<item name="url" necessary="yes"/><!--分享页面的url-->
+		</request>
+		<response necessary="no">
+			<item name="timestamp" necessary="no"/><!--时间戳-->
+			<item name="noncestr" necessary="no"/><!--随机字符串-->
+			<item name="signature" necessary="no"/><!--签名-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	//微信分享登录
+	<format code="wxsharelogin">
+		<request necessary="yes">
+			<item name="code" necessary="yes"/><!--登录凭证-->
+			<item name="longitude" necessary="yes" /><!--经度-->
+			<item name="latitude" necessary="yes" /><!--纬度-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--微信小程序初次登录绑定手机号-->
+	<format code="wxbindphonelogin">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--电话号码-->
+			<item name="identifycode" necessary="yes" /><!--验证码-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+			<item name="wechat_id" necessary="no" /><!--微信登录时传递此字段-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--监督人员发送消息-->
+	<format code="deliverymessage">
+		<request necessary="no">
+		</request>
+		<response necessary="yes">
+			<item name="im_uuid" necessary="no" /><!--投诉云信id编号-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--第三方登陆-qq-->
+	<format code="chatlogin">
+		<request necessary="yes">
+			<item name="qq_id"  necessary="yes" /><!--qqid-->
+			<item name="qq_nick_name"  necessary="yes" /><!--qq昵称-->
+			<item name="portrait_url"  necessary="yes" /><!--头像照片地址-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+		</request>
+		<response necessary="no">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="customer_grade" necessary="no" /><!--客户等级-->
+			<item name="assistant_id" necessary="no" /><!--如果是营业员，这个字段不为空-->
+			<item name="im_username" necessary="no" /><!--云信用户名-->
+			<item name="im_pass" necessary="yes" /><!--云信密码-->
+			<item name="im_uuid" necessary="no" /><!--云信id编号-->
+			<item name="first_flag" necessary="no" /><!--是否是第一次登陆;0第一次登陆，1不是第一次登陆-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--登陆首页-重新定位地址-->
+	<format code="sureaddress">
+		<request necessary="yes">
+			<item name="address_id" necessary="no" /><!--地址编号-->
+			<item name="receiver_area"  necessary="no" /><!--地区-->
+			<item name="longitude" necessary="no" /><!--经度-->
+			<item name="latitude" necessary="no" /><!--纬度-->
+			<item name="city_code" necessary="no" /><!--城市编码-->
+			<item name="detail_address" necessary="no" /><!--详细地址-->
+			<item name="hot_city" necessary="no"/><!--获取不到定位信息时，传入热门城市默认位置，0573-嘉兴-->
+		</request>
+		<response necessary="no">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--登陆首页-实时定位地址-->
+	<format code="setaddress">
+		<request necessary="yes">
+			<item name="longitude" necessary="yes" /><!--经度-->
+			<item name="latitude" necessary="yes" /><!--纬度-->
+			<item name="city_code" necessary="yes" /><!--城市编码-->
+			<item name="detail_address" necessary="yes" /><!--详细地址-->
+		</request>
+		<response necessary="no">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--查询客户有没有收货地址-->
+	<format code="queryaddress">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+			    <item name="address_id"  necessary="yes" /><!--地址编号-->
+			    <item name="receiver_area"  necessary="yes" /><!--地区-->
+			    <item name="detail_address"  necessary="yes" /><!--详细地址-->
+				<item name="longitude" necessary="yes" /><!--经度-->
+				<item name="latitude" necessary="yes" /><!--纬度-->
+				<item name="city_code" necessary="yes" /><!--城市编码-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--登陆推荐关注-->
+	<format code="recommendfocus">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<list name="notesinfo">
+				<item name="assistant_id" necessary="no" /><!--营业员编号-->
+				<item name="customer_picture" necessary="no" /><!--营业员照片-->
+				<item name="customer_name" necessary="no" /><!--营业员名称-->
+				<item name="gender" necessary="no" /><!--性别-->
+				<item name="note_picture" necessary="no" /><!--笔记照片-->
+				<item name="note_name" necessary="no" /><!--笔记名称-->
+				<item name="note_desc" necessary="no" /><!--笔记描述-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--登陆一键关注营业员-->
+	<format code="focusassistant">
+		<request necessary="yes">
+			<item name="assistantids"  necessary="yes" /><!--营业员编号集合，营业员id根据assistant_id以分号分开-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-我的点赞-->
+	<format code="mylike">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID，识别客户信息-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<item name="like_total" necessary="yes" /><!--笔记点赞总数-->
+			<list name="data">
+				<item name="note_name" necessary="yes" /><!--笔记名称-->
+				<item name="note_desc" necessary="yes" /><!--笔记描述-->
+				<item name="note_id" necessary="yes" /><!--笔记id-->
+				<item name="video_flag" necessary="yes" /><!--是否有视频:0没有1有-->
+				<item name="picture_url" necessary="yes" /><!--笔记照片-->
+				<item name="created_at" necessary="yes" /><!--创建时间-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--领券中心-->
+	<format code="couponcenter">
+		<request necessary="yes">
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+				<item name="coupon_standard_id" necessary="yes" /><!--优惠券编号-->
+				<item name="effective_date" necessary="yes" /><!--有效时间-->
+				<item name="expire_date" necessary="yes" /><!--失效时间-->
+				<item name="coupon_amount" necessary="yes" /><!--消费金额-->
+				<item name="serve_amount" necessary="yes" /><!--充当金额-->
+				<item name="cloud_number" necessary="yes" /><!--兑换猿币数-->
+				<item name="remarks" necessary="yes" /><!--备注-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-我的心愿单-->
+	<format code="mydesire">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID，识别客户信息-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<item name="desire_total" necessary="yes" /><!--心愿单总数-->
+			<list name="data">
+				<item name="product_name" necessary="yes" /><!--商品名称-->
+				<item name="product_id" necessary="yes" /><!--商品id-->
+				<item name="picture_url" necessary="yes" /><!--商品照片-->
+				<item name="created_at" necessary="yes" /><!--创建时间-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-我的优惠券-->
+	<format code="mycoupon">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID，识别客户信息-->
+			<item name="status" necessary="yes" /><!--状态（0-正常,1失效,2已使用）-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+				<item name="coupon_id" necessary="yes" /><!--优惠券编号-->
+				<item name="effective_date" necessary="yes" /><!--有效时间-->
+				<item name="expire_date" necessary="yes" /><!--失效时间-->
+				<item name="use_time" necessary="yes" /><!--使用时间-->
+				<item name="coupon_amount" necessary="yes" /><!--消费金额-->
+				<item name="serve_amount" necessary="yes" /><!--充当金额-->
+				<item name="remarks" necessary="yes" /><!--备注-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--确认订单-选择优惠券-->
+	<format code="selectcoupon">
+		<request necessary="yes">
+			<item name="order_amount" necessary="yes" /><!--订单价格-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+				<item name="coupon_id" necessary="yes" /><!--优惠券编号-->
+				<item name="effective_date" necessary="yes" /><!--有效时间-->
+				<item name="expire_date" necessary="yes" /><!--失效时间-->
+				<item name="coupon_amount" necessary="yes" /><!--消费金额-->
+				<item name="serve_amount" necessary="yes" /><!--充当金额-->
+				<item name="remarks" necessary="yes" /><!--备注-->
+				<item name="use_flag" necessary="yes" /><!--是否可以使用 0表示是，1表示不是-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--使用优惠券后的价格-->
+	<format code="useCoupon">
+		<request necessary="yes">
+			<item name="product_id" necessary="yes" /><!--商品ID-->
+			<item name="product_detail_id" necessary="yes" /><!--商品订明细ID-->
+			<item name="product_number" necessary="yes" /><!--商品数量-->
+			<item name="contract_id"  necessary="yes" /><!--套餐ID-->
+			<item name="coupon_id"  necessary="no" /><!--优惠券ID-->
+		</request>
+		<response necessary="yes">
+			<item name="product_price" necessary="yes" /><!--使用优惠券后的消费金额-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-点赞(取消点赞)笔记-->
+	<format code="givelike">
+		<request necessary="yes">
+			<item name="parameter_id" necessary="yes" /><!--参数id，根据对应的操作类型填写对应的id-->
+			<item name="operate" necessary="yes" /><!--2. 用户点赞笔记19.点赞红人 12.点赞看看活动-->
+		</request>
+		<response necessary="yes">
+			<item name="like_total" necessary="yes" /><!--点赞总数-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--商品晒单评价-->
+	<format code="goodslike">
+		<request necessary="yes">
+			<item name="comment_id" necessary="yes" /><!--评论id-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--推出登陆-->
+	<format code="logout">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-收藏(取消收藏)笔记-->
+	<format code="collectionnote">
+		<request necessary="yes">
+			<item name="parameter_id" necessary="yes" /><!--参数id，根据对应的操作类型填写对应的id-->
+			<item name="operate" necessary="yes" /><!--4.用户收藏笔记13.用户收藏看看活动18.收藏红人-->
+			<item name="type" necessary="yes" /><!--取消收藏:-1,收藏:1-->
+		</request>
+		<response necessary="yes">
+			<item name="collection_total" necessary="no" /><!--对应返回的收藏总数-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-收藏(取消收藏)商品-->
+	<format code="collectiongoods">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="product_id" necessary="yes" /><!--商品id-->
+			<item name="type" necessary="yes" /><!--取消收藏:-1,收藏:1-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-收藏(取消收藏)店铺-->
+	<format code="collectionshop">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="shop_id" necessary="yes" /><!--店铺id-->
+			<item name="type" necessary="yes" /><!--取消收藏:-1,收藏:1-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-关注(取消关注)营业员-->
+	<format code="focusemployer">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="assistant_id" necessary="yes" /><!--营业员id-->
+			<item name="type" necessary="yes" /><!--取消关注:-1,关注:1关注-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--扫码添加客户-->
+	<format code="focuscustomer">
+		<request necessary="yes">
+			<item name="assistant_id" necessary="no" /><!--客户id-->
+			<item name="code_number" necessary="yes" /><!--二维码字符串-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--扫码选择商品-->
+	<format code="selectgoods">
+		<request necessary="yes">
+			<item name="code_number" necessary="yes" /><!--二维码字符串-->
+		</request>
+		<response necessary="yes">
+			<item name="version_id" necessary="yes" /><!--版本id-->
+			<item name="version_name" necessary="yes" /><!--版本名称-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-修改头像照片-->
+	<format code="modifyportrait">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--客户id-->
+			<item name="customer_picture"  necessary="yes" /><!--客户照片-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-修改客户昵称-->
+	<format code="modifyname">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--客户id-->
+			<item name="customer_name"  necessary="yes" /><!--客户名称-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-修改客户性别-->
+	<format code="modifygender">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--客户id-->
+			<item name="gender"  necessary="yes" /><!--客户性别-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-显示收货地址-->
+	<format code="myaddress">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID-->
+			<item name="city_code" necessary="no"/><!--客户city_code-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<list name="data">
+				<item name="address_id" necessary="yes" /><!--地址ID-->
+				<item name="customer_id" necessary="yes" /><!--客户ID-->
+				<item name="receiver_name" necessary="yes" /><!--收货人名字-->
+				<item name="receiver_phone" necessary="yes" /><!--收货人电话-->
+				<item name="receiver_area" necessary="yes" /><!--收货人地区-->
+				<item name="detail_address" necessary="yes" /><!--收货人详细地址-->
+				<item name="address_flag" necessary="no" /><!--是否是默认地址：1表示是，0 表示不是-->
+				<item name="use_flag" necessary="no" /><!--是否可以使用 0表示是，1表示不是-->
+			</list>
+		</response>
+	</format>
+	<!--客户-我的购物车-->
+	<format code="mycart">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<list name="data">
+				<item name="cart_id" necessary="yes" /><!--地址ID-->
+				<item name="product_name" necessary="yes" /><!--商品名称-->
+				<item name="color" necessary="yes" /><!--颜色-->
+				<item name="memory_capacity" necessary="yes" /><!--内存容量-->
+				<item name="supplier_desc" necessary="yes" /><!--运营商-->
+				<item name="contract_name" necessary="no" /><!--套餐-->
+				<item name="product_number" necessary="yes" /><!--商品数量-->
+				<item name="product_price" necessary="yes" /><!--商品价格-->
+				<item name="picture_url" necessary="yes" /><!--商品价格-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-修改收货地址-->
+	<format code="modifyaddress">
+		<request necessary="yes">
+			<item name="address_id" necessary="yes" /><!--地址ID-->
+			<item name="customer_id" necessary="no" /><!--客户ID-->
+			<item name="receiver_name" necessary="yes" /><!--收货人名字-->
+			<item name="receiver_phone" necessary="yes" /><!--收货人电话-->
+			<item name="receiver_area" necessary="yes" /><!--收货人地区-->
+			<item name="detail_address" necessary="yes" /><!--收货人详细地址-->
+		</request>
+		<response necessary="yes">
+			<item name="use_flag" necessary="yes" /><!--收货人详细地址-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--查看评价页面评鉴-->
+	<format code="evaluategoods">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--地址ID-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+		     	<item name="product_name" necessary="yes" /><!--商品名字-->
+			    <item name="product_id" necessary="yes" /><!--商品id-->
+			    <item name="picture_url" necessary="yes" /><!--商品照片-->
+			    <item name="color" necessary="no" /><!--颜色-->
+			    <item name="memory_capacity" necessary="no" /><!--内存容量-->
+			    <item name="supplier_desc" necessary="no" /><!--运营商-->
+			    <item name="contract_name" necessary="no" /><!--套餐-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--新增商品评价-->
+	<format code="addevaluate">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+			<item name="product_id" necessary="yes" /><!--商品id-->
+			<item name="comment_content" necessary="yes" /><!--评论内容-->
+			<item name="shop_goods" necessary="yes" /><!--店铺商品评分-->
+			<item name="shop_delivery" necessary="yes" /><!--店铺配送评分-->
+			<item name="shop_service" necessary="yes" /><!--店铺服务评分-->
+			<item name="shop_satisfaction" necessary="yes" /><!--店铺满意评分-->
+			<item name="picture_url" necessary="no" /><!--评论照片以分号分割--><!--照片最多三张-->
+			<item name="is_hide" necessary="yes" /><!--是否匿名:0不匿名1匿名-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-收货地址-设置默认地址-->
+	<format code="defaultaddress">
+		<request necessary="yes">
+			<item name="address_id" necessary="yes" /><!--地址ID-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-新增收货地址-->
+	<format code="addaddress">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID-->
+			<item name="receiver_name" necessary="yes" /><!--收货人名字-->
+			<item name="receiver_phone" necessary="yes" /><!--收货人电话-->
+			<item name="receiver_area" necessary="yes" /><!--收货人地区-->
+			<item name="detail_address" necessary="yes" /><!--收货人详细地址-->
+		</request>
+		<response necessary="yes">
+			<item name="use_flag" necessary="yes" /><!--是否可以使用 0表示是，1表示不是-->
+			<item name="address_id" necessary="no" /><!--地址id-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-删除收货地址-->
+	<format code="deleteaddress">
+		<request necessary="yes">
+			<item name="address_id" necessary="yes" /><!--地址id-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-收藏单-笔记-->
+	<format code="notecollection">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--当前客户id-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<item name="col_note_total" necessary="yes" /><!--笔记收藏总数-->
+			<item name="col_goods_total" necessary="yes" /><!--商品收藏总数-->
+			<item name="col_shop_total" necessary="yes" /><!--店铺收藏总数-->
+			<list name="data">
+				<item name="note_id" necessary="yes" /><!--笔记id-->
+				<item name="note_desc" necessary="yes" /><!--笔记描述-->
+				<item name="note_name" necessary="yes" /><!--笔记名称-->
+				<item name="note_desc" necessary="yes" /> <!--笔记描述-->
+				<item name="video_flag" necessary="yes" /><!--是否有视频:0没有1有-->
+				<item name="created_at" necessary="yes" /><!--收藏时间-->
+				<item name="picture_url" necessary="yes" /><!--笔记照片-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-收藏单-商品-->
+	<format code="goodscollection">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--当前客户id-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<item name="col_note_total" necessary="yes" /><!--笔记收藏总数-->
+			<item name="col_goods_total" necessary="yes" /><!--商品收藏总数-->
+			<item name="col_shop_total" necessary="yes" /><!--店铺收藏总数-->
+			<list name="data">
+				<item name="product_id" necessary="yes" /><!--商品id-->
+				<item name="product_name" necessary="yes" /><!--商品名称-->
+				<item name="picture_url" necessary="yes" /><!--商品照片-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-收藏单-店铺-->
+	<format code="shopcollection">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--当前客户id-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<item name="col_note_total" necessary="yes" /><!--笔记收藏总数-->
+			<item name="col_goods_total" necessary="yes" /><!--商品收藏总数-->
+			<item name="col_shop_total" necessary="yes" /><!--店铺收藏总数-->
+			<list name="data">
+				<item name="shop_id" necessary="yes" /><!--店铺id-->
+				<item name="shop_name" necessary="yes" /><!--店铺名称-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员个人页面-基本信息-->
+	<format code="assistantinfo">
+		<request necessary="yes">
+			<item name="assistant_id" necessary="yes" /><!--营业员id-->
+		</request>
+		<response necessary="yes">
+			    <item name="assistant_focus_flag" necessary="yes" /><!--营业员是否被关注:-1被关注1关注-->
+				<item name="customer_picture" necessary="yes" /><!--营业员照片-->
+				<item name="customer_name" necessary="yes" /><!--营业员名称-->
+				<item name="shop_name" necessary="yes" /><!--店铺名称-->
+			    <item name="shop_id" necessary="yes" /><!--店铺id-->
+				<item name="gender" necessary="yes" /><!--性别-->
+				<item name="fans_total" necessary="yes" /><!--被关注总数-->
+				<item name="note_total" necessary="yes" /><!--笔记总数-->
+				<item name="like_total" necessary="yes" /><!--被点赞总数-->
+			    <item name="im_uuid" necessary="yes" /><!--云信accid-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--用户个人页面-基本信息-->
+	<format code="commoncustomer">
+		<request necessary="yes">
+			<item name="commonuser_id" necessary="yes" /><!--用户id-->
+		</request>
+		<response necessary="yes">
+			<item name="customer_picture" necessary="yes" /><!--用户照片-->
+			<item name="customer_name" necessary="yes" /><!--用户名称-->
+			<item name="gender" necessary="yes" /><!--性别-->
+			<item name="note_total" necessary="yes" /><!--笔记总数-->
+			<item name="like_total" necessary="yes" /><!--被点赞总数-->
+			<item name="im_uuid" necessary="yes" /><!--云信accid-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /><!--消息编码-->
+				<item name="msg_inf" necessary="yes" /><!--消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--打赏-->
+	<format code="givereward">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<item name="cur_bal"  necessary="yes" /><!--当前猿币数量-->
+			<list name="rewardcomment"><!--打赏评论-->
+				<item name="reward_id" necessary="yes" /><!--打赏评论id-->
+				<item name="reward_comment" necessary="no" /><!--打赏评论-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--确定打赏-->
+	<format code="surereward">
+		<request necessary="yes">
+			<item name="cloud_num"  necessary="yes" /><!--猿币数量-->
+			<item name="parameter_id"  necessary="yes" /><!--当前参数id-->
+			<item name="comment_content"  necessary="yes" /><!--评论内容-->
+			<item name="operate"  necessary="yes" /><!--11.客户打赏笔记 14.用户打赏看看活动 17.用户打赏红人-->
+			<item name="type"  necessary="yes" /><!--评论类型:1笔记2评论商品3评论红人4评论看看活动-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的-猿币-->
+	<format code="mycloud">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--当前用户-->
+		</request>
+		<response necessary="yes">
+			<item name="cur_bal" necessary="yes" /><!--当前余额-->
+			<item name="day_num" necessary="yes" /><!--天数-->
+			<item name="add_record_flag" necessary="yes" /><!--是否已经签到:0已签到1未签到-->
+			<item name="is_record" necessary="yes" /><!--是否提醒签到:0提醒1不提醒-->
+			<list name="cloudinfo"><!--云笔明细-->
+				<item name="tm_smp" necessary="no" /><!--时间-->
+				<item name="bus_typ" necessary="no" /><!--业务类型(00-签到 01-打赏 02-营业员加客户聊聊 03-兑换猿币 04-首次登录获取猿币 05-评价订单获取猿币）06-抽奖扣除猿币-->
+				<item name="txn_amt" necessary="no" /><!--交易金额-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-我的-猿币-->
+	<format code="customercloud">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--当前用户-->
+		</request>
+		<response necessary="yes">
+			<item name="cur_bal" necessary="yes" /><!--当前余额-->
+			<item name="day_num" necessary="yes" /><!--天数-->
+			<item name="add_record_flag" necessary="yes" /><!--是否已经签到:0已签到1未签到-->
+			<list name="cloudinfo"><!--云笔明细-->
+				<item name="tm_smp" necessary="no" /><!--时间-->
+				<item name="bus_typ" necessary="no" /><!--业务类型(00-签到 01-打赏）-->
+				<item name="txn_amt" necessary="no" /><!--交易金额-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-猿币兑换-->
+	<format code="exchangecoupon">
+		<request necessary="yes">
+			<item name="coupon_standard_id"  necessary="yes" /><!--猿币id-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--签到-->
+	<format code="addrecord">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<item name="cloud_num" necessary="no"/><!--云笔数-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--抽奖-->
+	<format code="lottery">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--抽奖-->
+	<format code="lotteryaward">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<list name="awardinfos">
+				<item name="id"  necessary="yes" /><!--奖品id-->
+				<item name="award_type"  necessary="yes" /><!--奖品种类:0商品，1优惠券，2猿币，3谢谢关注-->
+				<item name="product_id"  necessary="no" /><!--商品奖品：商品id-->
+				<item name="product_name"  necessary="no" /><!--商品奖品：商品名称-->
+				<item name="picture_url"  necessary="no" /><!--商品奖品：商品图片-->
+				<item name="coupon_standard_id"  necessary="no" /><!--优惠券奖品：优惠券id-->
+				<item name="effective_date"  necessary="no" /><!--优惠券奖品：起效时间-->
+				<item name="expire_date"  necessary="no" /><!--优惠券奖品：过期时间-->
+				<item name="coupon_amount"  necessary="no" /><!--优惠券奖品：满减额-->
+				<item name="serve_amount"  necessary="no" /><!--优惠券奖品：满减额-->
+				<item name="cloud_number"  necessary="no" /><!--优惠券奖品：猿币数-->
+				<item name="remarks"  necessary="no" /><!--优惠券奖品：备注-->
+				<item name="cloud_num"  necessary="no" /><!--猿币奖品：猿币数-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员点击客户头像,加客户聊聊，给猿币-->
+	<format code="chatcustomer">
+		<request necessary="no">
+			<item name="customer_id"  necessary="no" /><!--客户id-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员-我的-->
+	<format code="myassistant">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<item name="customer_picture"  necessary="yes" /><!--客户照片-->
+			<item name="customer_name"  necessary="yes" /><!--客户名称-->
+			<item name="note_total"  necessary="yes" /><!--笔记总数-->
+			<item name="like_total"  necessary="yes" /><!--点赞总数-->
+			<item name="cur_bal"  necessary="yes" /><!--猿币总数-->
+			<item name="fans_total"  necessary="no" /><!--顾客总数-->
+			<item name="add_record_flag" necessary="yes" /><!--是否已经签到:0已签到1未签到-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员-我的-客户-->
+	<format code="mycustomer">
+		<request necessary="yes">
+			<item name="assistant_id"  necessary="no" /><!--营业员id-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+			   <item name="customer_picture"  necessary="yes" /><!--客户照片-->
+			   <item name="customer_name"  necessary="yes" /><!--客户名称-->
+			   <item name="im_uuid"  necessary="yes" /><!--客户的accid-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--聊聊-顾问团-->
+	<format code="myadviser">
+		<request necessary="yes">
+			<item name="customer_id"  necessary="no" /><!--客户id-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+				<item name="customer_picture"  necessary="yes" /><!--客户照片-->
+				<item name="customer_name"  necessary="yes" /><!--客户名称-->
+				<item name="im_uuid"  necessary="yes" /><!--客户的accid-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员-我的-笔记-->
+	<format code="mynote">
+		<request necessary="yes">
+			<item name="assistant_id"  necessary="no" /><!--营业员id-->
+			<item name="note_status"  necessary="yes" /><!--归档标识:0审核通过1审核未通过-->
+		</request>
+		<response necessary="yes">
+			<list name="noteinfo"> <!--笔记信息-->
+				<item name="note_id" necessary="no" /><!--笔记编号-->
+				<item name="picture_url" necessary="no" /><!--笔记照片-->
+				<item name="note_name" necessary="no" /><!--笔记名称-->
+				<item name="note_desc" necessary="no" /><!--笔记描述-->
+				<item name="created_at" necessary="no" /><!--创建时间-->
+				<item name="note_like_total" necessary="no" /><!--笔记点赞总数-->
+				<item name="note_like_flag" necessary="no" /><!--笔记是否点赞:-1已点赞,1未点赞-->
+				<item name="aspect_ratio" necessary="no" /><!--宽高比-->
+				<item name="note_status" necessary="no" /><!--笔记状态-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员-笔记-收藏-->
+	<format code="deletecollection">
+		<request necessary="yes">
+			<item name="parameter_ids"  necessary="yes" /><!--上传所参数id，以分号分割-->
+			<item name="type"  necessary="yes" /><!--类型,4笔记7商品3店铺-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--营业员-我的-笔记-删除-->
+	<format code="deletenote">
+		<request necessary="yes">
+			<item name="note_ids"  necessary="yes" /><!--上传所参数id，以分号分割-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-点赞(取消点赞)笔记评论-->
+	<format code="commentlike">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="comment_id" necessary="yes" /><!--评论id-->
+			<item name="focus_type" necessary="yes" /><!--5.用户点赞笔记评论 9.用户点赞红人评论 15.用户点赞看看活动评论 -->
+			<item name="type" necessary="yes" /><!--取消点赞:-1,点赞:1-->
+		</request>
+		<response necessary="yes">
+			<item name="comment_like_total" necessary="yes" /><!--点赞总数-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--客户-点赞(取消点赞)笔记回复-->
+	<format code="replylike">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="reply_id" necessary="yes" /><!--回复id-->
+			<item name="focus_type" necessary="yes" /><!--6.用户点赞笔记回复10.用户点赞红人回复 16.用户点赞看看活动回复-->
+			<item name="type" necessary="yes" /><!--取消点赞:-1,点赞:1-->
+		</request>
+		<response necessary="yes">
+			<item name="reply_like_total" necessary="yes" /><!--点赞总数-->
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--聊聊-营业员-加好友展示页面-电话号码搜好友-->
+	<format code="searchcustomer">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--搜索的电话号码-->
+			<item name="assistant_id" necessary="no" /><!--营业员id-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+		     	<item name="customer_picture" necessary="no" /><!--客户照片-->
+		    	<item name="customer_id" necessary="no" /><!--客户id-->
+			    <item name="customer_name" necessary="no" /><!--客户姓名-->
+			    <item name="focus_flag" necessary="no" /><!--是否已关注:-1已关注，-1未关注-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--聊聊-客户-加好友展示页面-电话号码搜好友-->
+	<format code="searchassistant">
+		<request necessary="yes">
+			<item name="phone" necessary="yes" /><!--搜索的电话号码-->
+			<item name="customer_id" necessary="no" /><!--客户id-->
+		</request>
+		<response necessary="yes">
+			<list name="data">
+			    <item name="customer_picture" necessary="no" /><!--营业员照片-->
+			    <item name="assistant_id" necessary="no" /><!--营业员id-->
+			    <item name="customer_name" necessary="no" /><!--营业员名称-->
+			    <item name="focus_flag" necessary="no" /><!--是否已关注:-1已关注，1未关注-->
+			</list>
+			<group name="gda">
+				<item name="msg_cd" necessary="no" />
+				<item name="msg_inf" necessary="no" />
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--用户信息-->
+	<format code="userinfo">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户id-->
+			<item name="customer_name" necessary="no" /><!--客户姓名-->
+			<item name="customer_picture" necessary="no" /><!--客户照片-->
+			<item name="age" necessary="no" /><!--年龄-->
+			<item name="gender" necessary="no" /><!--性别-->
+			<item name="phone" necessary="no" /><!--电话号码-->
+			<item name="customer_type" necessary="no" /><!--客户类型: 1营业员 0普通用户-->
+			<item name="shop_name" necessary="no" /><!--店铺名称-->
+			<item name="qr_code" necessary="no" /><!--用户二维码照片-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--我的订单-->
+	<format code="myorder">
+		<request necessary="yes">
+			<item name="customer_id" necessary="no" /><!--客户ID，识别客户信息-->
+			<item name="order_status" necessary="no" /><!--订单状态:1未付款2待发货3待收货4待评价,查询所有订单为空-->
+			<item name="pag_no"  necessary="no" /><!--加载页数-->
+			<item name="pag_num"  necessary="no" /><!--每页多少个-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<item name="total_qty" necessary="yes" /><!--订单总数-->
+			<list name="orderinfo">
+				<item name="shop_id" necessary="yes" /><!-- 店铺id -->
+				<item name="shop_name" necessary="yes" /><!--店铺名称-->
+				<item name="order_no" necessary="yes" /><!--订单编号 -->
+				<item name="pay_way" necessary="yes" /><!--付款方式:0在线支付1货到付款-->
+				<item name="delivery_way" necessary="yes" /><!--配送方式:0到店自提1送货上门-->
+				<item name="order_status" necessary="yes" /><!--订单状态-->
+				<item name="order_type" necessary="yes" /><!--订单类型，"2"购买商品订单，"0"充话费订单,"1"充流量订单-->
+				<item name="pay_amount" necessary="yes" /><!--付款金额-->
+				<item name="product_amount" necessary="yes" /><!--商品金额-->
+				<item name="coupon_amount" necessary="yes" /><!--优惠券金额-->
+				<item name="coupon_id" necessary="yes" /><!--优惠券金额-->
+				<item name="use_flag" necessary="yes" /><!--优惠券是否可用:"0"不可用, "1"可用-->
+				<item name="created_at" necessary="yes" /><!--创建时间-->
+				<list name="goodsinfo">
+					<item name="product_name" necessary="yes" /><!--商品名称  -->
+					<item name="product_id" necessary="yes" /><!--商品名称  -->
+					<item name="product_number" necessary="yes" /><!--商品数量-->
+					<item name="product_price" necessary="yes" /><!--商品价格-->
+					<item name="color" necessary="yes" /><!--颜色 -->
+					<item name="memory_capacity" necessary="yes" /><!--内存容量 -->
+					<item name="supplier_name" necessary="yes" /><!--供应商名字-->
+					<item name="contract_name" necessary="no" /><!--套餐名称-->
+					<item name="picture_url" necessary="yes" /><!--商品照片-->
+				</list>
+			</list>
+		</response>
+	</format>
+	<!--我的订单信息-->
+	<format code="payorder">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+			<item name="pay_way" necessary="yes" /><!--付款方式:0支付宝1微信-->
+			<item name="type" necessary="yes" /><!--类型:0话费充值1流量充值2商品消费-->
+			<item name="coupon_flag" necessary="no" /><!--是否使用优惠券: 0不使用,1使用-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<item name="order_no" necessary="yes" /><!-- 订单编号 -->
+			<item name="order_name" necessary="yes" /><!--订单名称-->
+			<item name="show_url" necessary="yes" /><!--订单url-->
+			<item name="pay_amount" necessary="yes" /><!--付款金额-->
+			<item name="aliOrderInfo" necessary="yes" /><!--阿里订单，当微信支付时返回空""-->
+			<item name="prepayid"   necessary="yes" /><!--微信支付返回预支付交易会话标识,当支付宝时返回""-->
+			<item name="appid"   necessary="yes" /><!--微信支付-应用appid-->
+			<item name="partnerid"   necessary="yes" /><!--微信支付-商户号-->
+			<item name="noncestr"   necessary="yes" /><!--微信支付-随机数-->
+			<item name="wxpay_package"   necessary="yes" /><!--微信支付-扩展字段-->
+			<item name="sign"   necessary="yes" /><!--微信支付-签名-->
+			<item name="timestamp"   necessary="yes" /><!--微信支付-时间戳-->
+		</response>
+	</format>
+
+	<!--我的订单详情页-->
+	<format code="orderdetail">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<item name="delivery_name" necessary="yes" /><!--配送人姓名-->
+			<item name="delivery_phone" necessary="yes" /><!--配送人电话-->
+			<item name="delivery_shop" necessary="yes" /><!--配送店铺-->
+			<item name="shop_id" necessary="yes" /><!-- 店铺id -->
+			<item name="shop_name" necessary="yes" /><!--店铺名称-->
+			<item name="order_no" necessary="yes" /><!--订单编号 -->
+			<item name="serial_no" necessary="yes" /><!--流水号 -->
+			<item name="order_status" necessary="yes" /><!--订单状态-->
+			<item name="pay_way" necessary="yes" /><!--付款方式:0在线支付1货到付款-->
+			<item name="delivery_way" necessary="yes" /><!--配送方式:0到店自提1送货上门-->
+			<item name="pay_amount" necessary="yes" /><!--付款金额-->
+			<item name="created_at" necessary="yes" /><!--创建时间-->
+			<item name="receiver_name" necessary="yes" /><!--收货人姓名-->
+			<item name="receiver_phone" necessary="yes" /><!--收货人电话-->
+			<item name="receiver_area" necessary="yes" /><!--收货区域-->
+			<item name="detail_address" necessary="yes" /><!--详细地址-->
+			<item name="shop_mobile" necessary="yes" /><!--店铺电话-->
+			<item name="serve_amount" necessary="yes" /><!--优惠券充当金额-->
+			<item name="coupon_id" necessary="yes" /><!--优惠券id-->
+			<list name="goodsinfo">
+				<item name="product_name" necessary="yes" /><!--商品名称  -->
+				<item name="product_id" necessary="yes" /><!--商品名称  -->
+				<item name="product_number" necessary="yes" /><!--商品数量-->
+				<item name="product_price" necessary="yes" /><!--商品价格-->
+				<item name="color" necessary="yes" /><!--颜色 -->
+				<item name="memory_capacity" necessary="yes" /><!--内存容量 -->
+				<item name="supplier_name" necessary="yes" /><!--供应商名字-->
+				<item name="contract_name" necessary="no" /><!--套餐名称-->
+				<item name="picture_url" necessary="yes" /><!--商品照片-->
+				<item name="deadline_product" necessary="yes" /><!--是否是限时购商品：1是限时购商品,0不是限时购商品-->
+			</list>
+		</response>
+	</format>
+	<!--查看订单物流-->
+	<format code="orderlogistics">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<item name="delivery_name" necessary="yes" /><!--配送人姓名-->
+			<item name="delivery_phone" necessary="yes" /><!--配送人电话-->
+			<item name="delivery_shop" necessary="yes" /><!--配送店铺-->
+			<list name="data">
+			    <item name="logistics_desc" necessary="yes" /><!--物流描述-->
+			    <item name="logistics_status" necessary="yes" /><!--物流状态:1.提交订单 2.分配店铺 3.商品发货 4.配送信息 5.确认签收-->
+			    <item name="created_at" necessary="yes" /><!--创建时间-->
+			</list>
+		</response>
+	</format>
+
+	<!--提醒发货-->
+	<format code="reminddelivery">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--是否提醒签到-->
+	<format code="isrecord">
+		<request necessary="yes">
+			<item name="is_record" necessary="yes" /><!--是否提醒签到:0提醒1不提醒-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--营业员我的订单管理-->
+	<format code="ordermanage">
+		<request necessary="yes">
+			<item name="order_no" necessary="no" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+		<list name="orderinfo">
+			<item name="order_no" necessary="yes" /><!--订单编号 -->
+			<item name="customer_name" necessary="yes" /><!--客户名称-->
+			<item name="customer_message" necessary="yes" /><!--客户留言-->
+			<item name="order_status" necessary="yes" /><!--订单状态:1未付款2待发货3待收货4待评价-->
+			<item name="mobile_code" necessary="yes" /><!--手机编码-->
+			<list name="goodsinfo">
+				<item name="product_name" necessary="yes" /><!--商品名称  -->
+				<item name="product_id" necessary="yes" /><!--商品名称  -->
+				<item name="product_number" necessary="yes" /><!--商品数量-->
+				<item name="product_price" necessary="yes" /><!--商品价格-->
+				<item name="color" necessary="yes" /><!--颜色 -->
+				<item name="memory_capacity" necessary="yes" /><!--内存容量 -->
+				<item name="supplier_name" necessary="yes" /><!--供应商名字-->
+				<item name="contract_name" necessary="no" /><!--套餐名称-->
+				<item name="picture_url" necessary="yes" /><!--商品照片-->
+			</list>
+		</list>
+		<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+		</group>
+		</response>
+	</format>
+	<!--营业员我的订单管理-添加备注-->
+	<format code="orderremarks">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+			<item name="customer_message" necessary="no" /><!--客户留言-->
+			<item name="mobile_code" necessary="no" /><!--手机编码-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--订单取消-->
+	<format code="ordercancel">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--订单删除-->
+	<format code="orderdelete">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--确认收货-->
+	<format code="ordertaken">
+		<request necessary="yes">
+			<item name="order_no" necessary="yes" /><!--订单编号-->
+			<item name="order_type" necessary="yes" /><!--订单类型，"2"购买商品订单，"0"充话费订单,"1"充流量订单-->
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+
+	<!--客户通知消息-->
+	<format code="notifymessage">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<!--文本信息-->
+			<list name="data">
+				<item name="notice_content" necessary="yes" /><!--消息内容-->
+				<item name="notice_type" necessary="yes" /><!--消息类型:1.物流/2.加好友/3.猿币/4.优惠券/5.好友发新笔记/6.点赞笔记/7.收藏笔记/8.打赏笔记/9.评论笔记-->
+				<item name="notice_picture" necessary="yes" /><!--消息照片-->
+				<item name="parameter_id" necessary="yes" /><!--参数id,点赞收藏打赏评论笔记消息时为笔记id-->
+				<item name="created_at" necessary="yes" /><!--创建时间-->
+				<item name="customer_id" necessary="yes" /><!--发布者id-->
+				<item name="customer_name" necessary="yes" /><!--发布者名称-->
+				<item name="im_uuid" necessary="yes" /><!--发布者名称-->
+				<item name="note_name" necessary="no" /><!--笔记名称-->
+			</list>
+		</response>
+	</format>
+	<!--客户通知消息-->
+	<format code="notifyorder">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<list name="data">
+				<item name="order_no" necessary="yes" /><!--订单编号-->
+				<item name="order_status" necessary="yes" /><!--3待收货4待评价-->
+				<item name="picture_url" necessary="yes" /><!--消息照片-->
+				<item name="product_name" necessary="yes" /><!--商品名称-->
+				<item name="color" necessary="yes" /><!--颜色 -->
+				<item name="memory_capacity" necessary="yes" /><!--内存容量 -->
+				<item name="supplier_desc" necessary="yes" /><!--供应商名字-->
+			</list>
+		</response>
+	</format>
+	<!--版本是否跟新接口-->
+	<format code="versionupdate">
+		<request necessary="no">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+			<item name="version_number" necessary="yes" /><!--版本号-->
+			<item name="force_update" necessary="yes" /><!--是否强制更新:0否1是-->
+			<item name="file_md5" necessary="yes" /><!--文件的md5-->
+			<item name="file_load_path" necessary="no" /><!--文件更新路径-->
+			<item name="update_content" necessary="yes" /><!--更新内容-->
+			<item name="file_size" necessary="no" /><!--文件大小-->
+		</response>
+	</format>
+	<!--根据当前用户的经纬度获取用户的地址-->
+	<format code="queryposition">
+		<request necessary="yes">
+			<item name="longitude"  necessary="yes" /><!--经度-->
+			<item name="latitude"  necessary="yes" /><!--纬度-->
+		</request>
+		<response necessary="yes">
+			<item name="position_flag" necessary="yes" /><!--该用户所在区域是否存在店铺:0用户没有收货地址1用户有地址,没有在服务区2有地址,在服务区的-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--点击选择收货地址-->
+	<format code="selectposition">
+		<request necessary="yes">
+			<item name="address_id"  necessary="yes" /><!--地址编号-->
+		</request>
+		<response necessary="yes">
+			<item name="longitude"  necessary="yes" /><!--经度-->
+			<item name="latitude"  necessary="yes" /><!--纬度-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--云信账户迁移-->
+	<format code="recreateuuid">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+	<!--首页左上角地理位置显示-->
+	<format code="currentaddress">
+		<request necessary="yes">
+		</request>
+		<response necessary="yes">
+			<item name="is_exist"  necessary="yes" /><!--是否在当前地址：0在当前地址1不在当前地址-->
+			<item name="receiver_area"  necessary="yes" /><!--地区-->
+			<item name="detail_address"  necessary="yes" /><!--详细地址-->
+			<item name="city_name" necessary="yes" /><!--城市名称-->
+			<group name="gda">
+				<item name="msg_cd" necessary="yes" /> <!-- 消息编码-->
+				<item name="msg_inf" necessary="yes" /><!-- 消息信息-->
+				<item name="msg_typ" necessary="yes" /><!--消息类型："N"表示正确，"E"表示错误-->
+			</group>
+		</response>
+	</format>
+</application>
