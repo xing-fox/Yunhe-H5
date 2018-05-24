@@ -14,6 +14,7 @@ const Coupon = resolve => require(['@/view/coupon'], resolve)
 const Nearbystore = resolve => require(['@/view/nearbystore'], resolve)
 const Personal = resolve => require(['@/view/personal'], resolve)
 const Chat = resolve => require(['@/view/chat'], resolve)
+const Chatdetail = resolve => require(['@/view/chatdetail'], resolve)
 
 Vue.use(Router)
 
@@ -61,7 +62,16 @@ export default new Router({
       component: Chat,
       meta: {
         title: '微聊'
-      }
+      },
+      children: [
+        {
+          path: 'chatdetail',
+          component: Chatdetail,
+          meta: {
+            title: '答案详情'
+          }
+        }
+      ]
     },
     {
       path: '/wechat_pub/personal',

@@ -1,29 +1,28 @@
 <template>
-     <div>
+  <div>
     <div class='evalmore' @scroll.stop.prevent="scrollFunc" ref="rewardBox">
       <div>
         <ul class="evaList">
           <li class="">
-            <div class="listImg">
+            <!--<div class="listImg">
               <img  alt="" src="../images/1.png">
-            </div>
+            </div>-->
             <div class="listContent1">
               <div class="listEval" >
                 <div class="list">
                   <div class="evalMain">
                     <ul>
-                     <span>以下是问题，可以选择查看问题答案！</span>
-                      <li class="questionlist">
-                     如果以上这些效果不能满足你的需求，你可以仿照animate.css的格式制作一些其他效果
-                     </li>
-                      <li>
-                     如果以上这些效果不能满足你的需求，你可以仿照animate.css的格式制作一些其他效果
-                     </li>
+                     <span>问题列表，点击选择查看问题答案！</span>
+                      <li v-for="(item, index) in commentData" :key="index" >
+                        <router-link :to="{path: 'chat/chatdetail', query:{'answer': item.answer}}" >
+                          问题{{ index+1 }} {{ item.question }}
+                        </router-link>
+                      </li>
                     </ul>
                   </div>
-                  <div class="timeZan">
-                    <span class="zanTime">08-12 08:32</span>
-                  </div>
+                 <div>
+                    <span @click="queryallquestion(flag)">{{ message }}</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -35,15 +34,19 @@
         </div>-->
       </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
-
 <script>
 export default {
   name: 'Chat',
   data () {
     return {
-      commentData: []
+      flag: true,
+      message: '展开',
+      commentData: [],
+      allquestion: [],
+      question: []
     }
   },
   created () {
@@ -52,9 +55,33 @@ export default {
   mounted () {},
   methods: {
     init () {
+      let that = this
       this.$http.talklist({
-      }).then(response => {
+        data: JSON.stringify({
+          'question': null
+        })
+      }).then(res => {
+        if (res.success && res.content) {
+          // 所有问题
+          that.allquestion = res.content
+          for (let i = 0; i <= 4; i++) {
+            // 前五条问题
+            that.commentData.push(res.content[i])
+            that.question.push(res.content[i])
+          }
+        }
       })
+    },
+    queryallquestion (flag) {
+      if (flag) {
+        this.commentData = this.allquestion
+        this.flag = false
+        this.message = '收回'
+      } else {
+        this.commentData = this.question
+        this.flag = true
+        this.message = '展开'
+      }
     }
   }
 }
@@ -281,30 +308,4 @@ export default {
   text-align: center;
   margin: 0 0 .5rem 0;
 }
-.questionlist{
-    position: relative;
-}
- .bor-b:after{
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    pointer-events: none;
-    border-bottom: 1px solid #ddd;
-    overflow: hidden;
-    -webkit-transform-origin: 0 0;
-    -moz-transform-origin: 0 0;
-    -ms-transform-origin: 0 0;
-    -o-transform-origin: 0 0;
-    transform-origin: 0 0;
-    -webkit-transform: scaleY(0.5);
-    -ms-transform: scaleY(0.5);
-    -o-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
 </style>

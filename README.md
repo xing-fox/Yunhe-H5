@@ -4,6 +4,12 @@
 
 ## Build Setup
 
+## Git commit 
+git add .
+git commit -m 'xxx'
+git pull
+git push
+
 ``` bash
 # install dependencies
 npm install
