@@ -146,5 +146,9 @@ export default {
   /* 我的页面 */
   customerInfo (params) {
     return post('/yunhe/wechat/customer/customerinfo', params)
+  },
+  /* 微聊 */
+  talklist (params) {
+    return post('/talk/default/gueryTalkDefaultlist', params)
   }
 }

@@ -13,6 +13,7 @@ const Evalmore = resolve => require(['@/view/evalmore'], resolve)
 const Coupon = resolve => require(['@/view/coupon'], resolve)
 const Nearbystore = resolve => require(['@/view/nearbystore'], resolve)
 const Personal = resolve => require(['@/view/personal'], resolve)
+const Chat = resolve => require(['@/view/chat'], resolve)
 
 Vue.use(Router)
 
@@ -52,6 +53,14 @@ export default new Router({
       component: Coupon,
       meta: {
         title: '我的优惠券'
+      }
+    },
+    {
+      path: '/wechat_pub/chat',
+      name: 'Chat',
+      component: Chat,
+      meta: {
+        title: '微聊'
       }
     },
     {
