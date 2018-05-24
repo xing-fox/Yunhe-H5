@@ -4,15 +4,23 @@
       <div v-for="(item, index) of list"
         :key="index"
         class="column-item">
-        <router-link :to="{ path: '/stroll/details', query:{'note_id': item.note_id}}">
-          <img :src="item.picture_url" alt="">
+        <router-link :to="{ path: 'stroll/details', query:{'note_id': item.note_id}}">
+          <div class="itemImg">
+            <img :src="item.picture_url" alt="">
+            <div v-if="item.video_flag == '1'" :class="{imgVedio: item.video_flag == '1'}">
+              <img src="../images/icon/play.png" alt="">
+            </div>
+          </div>
           <div class='item-title boxOrent'>{{ item.note_name }}</div>
           <div class='item-content boxOrent'>{{ item.note_desc }}</div>
           <div class='item-slef'>
             <img class='imgSelf' :src="item.customer_picture" alt="">
             <span class='selfName'>{{ item.customer_name }}</span>
-            <img class='imgZan' src="../images/icon/admire.png" alt="">
-            <span class='selfCount'>{{ item.note_like_total }}</span>
+            <div class='zan'>
+              <img class='imgZan' @click.stop.prevent="zanFunc(index)" v-if="item.note_like_flag == '1'" src="../images/icon/admire.png" alt="">
+              <img class='imgZan' @click.stop.prevent="zanFunc(index)" v-else src="../images/icon/admire_1.png" alt="">
+              <span class='selfCount'>{{ item.note_like_total }}</span>
+            </div>
           </div>
         </router-link>
       </div>
@@ -38,62 +46,65 @@ export default {
   },
   data () {
     return {
+      imgWidth: window.innerWidth * (174 / 375),
       itemWidth: 0,
       columnData: []
     }
   },
   watch: {
     list (val) {
-      this.renderList()
       setTimeout(() => {
         this.renderList()
-      }, 500)
+      }, 0)
     }
-  },
-  mounted () {
-    this.renderList()
-    setTimeout(() => {
-      this.renderList()
-    }, 500)
   },
   methods: {
     renderList () {
       if (!this.row) {
         this.columnData = []
-        this.$nextTick(() => {
-          const boxes = this.$refs.container.getElementsByClassName(
-            'column-item'
-          )
-          for (let i = 0; i < boxes.length; i++) {
-            this.setElementStyle(boxes[i], this.list[i], i)
-          }
-        })
+        const boxes = this.$refs.container.getElementsByClassName('column-item')
+        const heightes = this.$refs.container.getElementsByClassName('itemImg')
+        for (let i = 0; i < boxes.length; i++) {
+          // heightes[i].style.height = `${this.imgWidth * this.list[i].image_info.height / this.list[i].image_info.width}px`
+          heightes[i].style.height = `${this.imgWidth / this.list[i].aspect_ratio}px`
+          this.setElementStyle(boxes[i], this.list[i], i)
+        }
       }
     },
     setElementStyle (element, img, index) {
-      setTimeout(() => {
-        if (index < this.column) {
-          element.style.left = `${index * (100 / this.column)}%`
-          element.style.top = `0px`
-          this.$nextTick(() => {
-            this.columnData[index] = this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
-          })
+      if (index < this.column) {
+        element.style.left = `${index * (100 / this.column)}%`
+        element.style.top = `0px`
+        this.columnData[index] = this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
+      } else {
+        if (this.columnData[0] < this.columnData[1]) {
+          element.style.left = `0`
+          element.style.top = `${this.columnData[0]}px`
+          this.columnData[0] += this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
         } else {
-          if (this.columnData[0] < this.columnData[1]) {
-            element.style.left = `0`
-            element.style.top = `${this.columnData[0]}px`
-            this.$nextTick(() => {
-              this.columnData[0] += this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
-            })
-          } else {
-            element.style.left = `${(100 / this.column)}%`
-            element.style.top = `${this.columnData[1]}px`
-            this.$nextTick(() => {
-              this.columnData[1] += this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
-            })
-          }
+          element.style.left = `${(100 / this.column)}%`
+          element.style.top = `${this.columnData[1]}px`
+          this.columnData[1] += this.$refs.container.getElementsByClassName('column-item')[index].offsetHeight + 10
         }
-      }, 0)
+      }
+    },
+    zanFunc (arg) {
+      if (this.list[arg].note_like_flag === '1') {
+        this.list[arg].note_like_flag = '-1'
+        this.list[arg].note_like_total = parseInt(this.list[arg].note_like_total) + 1
+      } else {
+        this.list[arg].note_like_flag = '1'
+        this.list[arg].note_like_total = parseInt(this.list[arg].note_like_total) - 1
+      }
+      this.$http.zanNewNote({
+        data: JSON.stringify({
+          parameter_id: this.list[arg].note_id,
+          operate: 2
+        }),
+        openid: window.localStorage.getItem('openId')
+      }).then(response => {
+        console.log(response)
+      })
     }
   }
 }
@@ -113,30 +124,32 @@ export default {
     overflow: hidden;
     box-sizing: border-box;
     transition: all 0.3s ease;
-    &:before{
-      content: '';
-      pointer-events: none;
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      border: 1px solid #ddd;
-      border-radius: .1rem;
-      overflow: hidden;
-      -webkit-transform-origin: 0 0;
-      -moz-transform-origin: 0 0;
-      -ms-transform-origin: 0 0;
-      -o-transform-origin: 0 0;
-      transform-origin: 0 0;
-      -webkit-transform: scale(0.5, 0.5);
-      -ms-transform: scale(0.5, 0.5);
-      -o-transform: scale(0.5, 0.5);
-      transform: scale(0.5, 0.5);
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-    img {
+    border: 1px solid #ddd;
+    .itemImg{
       width: 100%;
+      position: relative;
+      img {
+        width: 100%;
+      }
+      .imgVedio{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,.6);
+        img{
+          width: 30%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto auto;
+        }
+      }
     }
     .item-title{
       color: #222;
@@ -171,26 +184,34 @@ export default {
         margin: 0 .04rem 0 .05rem;
         border-radius: .1rem;
       }
-      .imgZan{
-        width: .15rem;
-        height: .16rem;
-        position: absolute;
-        top: .02rem;
-        right: .35rem;
+      .zan{
+        flex: 1;
+        text-align: right;
+        margin: 0 .1rem 0 0;
+        .imgZan{
+          display: inline-block;
+          width: .15rem;
+          height: .16rem;
+          vertical-align: middle;
+        }
+        .selfCount{
+          display: inline-block;
+          color: #999;
+          font-size: .12rem;
+          margin: 0 0 0 .05rem;
+          vertical-align: middle;
+        }
       }
       .selfName{
         color: #222;
         font-size: .1rem;
-      }
-      .selfCount{
-        display: inline-block;
-        color: #999;
-        font-size: .12rem;
-        width: .26rem;
-        position: absolute;
-        top: 0;
-        left: 1.4rem;
-        text-align: right;
+        width: .8rem;
+        height: .2rem;
+        display: -webkit-box;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
       }
     }
   }

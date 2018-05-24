@@ -1,5 +1,5 @@
 <template>
-  <div class='praise' ref="wrapper">
+  <div class='praise' @scroll.stop.prevent="scrollFunc" ref="rewardBox">
     <ul>
       <li class="bor-b" v-for="(item, index) in operatorData" :key="index">
         <div class="listImg">
@@ -26,7 +26,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import BScroll from 'better-scroll'
 export default {
   name: 'Praise',
   data () {
@@ -39,17 +38,6 @@ export default {
   },
   created () {
     this.init()
-    this.$nextTick(() => {
-      this.scroll = new BScroll(this.$refs.wrapper, {
-        click: true
-      })
-      this.scroll.on('touchend', (pos) => {
-        if (this.scroll.y <= (this.scroll.maxScrollY + 50) && this.flag) {
-          this.pag_no++
-          this.init()
-        }
-      })
-    })
   },
   methods: {
     ...mapActions([
@@ -63,15 +51,21 @@ export default {
           'pag_no': this.pagNo,
           'pag_num': 15
         }),
-        openid: window.localStorage.getItem('openId')
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(response => {
         this.LoadingingStatus(false)
         this.operatorData = this.operatorData.concat(response.content.data)
-        if (response.content.data.length < 8) {
+        if (response.content.data.length < 15) {
           [this.flag, this.showNoMore] = [false, true]
         }
-        this.scroll.refresh()
       })
+    },
+    scrollFunc () {
+      if (this.$refs.rewardBox.scrollTop + document.body.clientHeight + 50 > this.$refs.rewardBox.scrollHeight && this.flag) {
+        this.pagNo++
+        this.commentFlag = false
+        this.init()
+      }
     }
   }
 }
@@ -85,7 +79,7 @@ export default {
     top: 0;
     bottom: 0;
     z-index: 10;
-    overflow: hidden;
+    overflow: scroll;
     left: 0;
     background: #f4f6fa;
     ul{
@@ -94,7 +88,8 @@ export default {
       margin: .09rem 0 0 0;
       background: #fff;
       li{
-        padding: .15rem .12rem;
+        padding: .15rem .12rem .15rem 0;
+        margin: 0 0 0 .12rem;
         display: flex;
         .listImg{
           width: .35rem;
@@ -122,6 +117,9 @@ export default {
               margin: 0 .05rem 0 0;
             }
           }
+        }
+        &:nth-last-child(1):after{
+          content: none;
         }
       }
     }

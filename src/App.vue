@@ -17,12 +17,34 @@ export default {
     Loading
   },
   created () {
+    /**
+     * 登录接口信息
+     */
+    this.$http.Wxlogin({
+      code: this.getQueryString('code') || ''
+    }).then(res => {
+      console.log(res)
+      if (res.success) {
+        window.localStorage.setItem('openId', res.content.pub_openid)
+      }
+      window.localStorage.setItem('shareUrl', location.href.split('#')[0])
+    }).catch(err => {
+      console.log(err)
+    })
   },
   computed: {
     ...mapState({
       LoginShow: state => state.Login.LoginState,
       LoadingShow: state => state.Loading.LoadingState
     })
+  },
+  methods: {
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
+    }
   }
 }
 </script>
@@ -32,6 +54,9 @@ export default {
 #app{
   width: 100%;
   height: 100%;
+}
+a:hover{
+  background: none;
 }
 .boxOrent{
   // eslint-disable-next-line

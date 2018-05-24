@@ -1,5 +1,6 @@
 <template>
   <div class='index'>
+    <div v-wechat-title="$route.meta.title"></div>
     <div class='indexContent' @scroll.stop.prevent="scrollFunc" ref="indexBox">
       <div id="header">
         <div class="manInfo">
@@ -9,10 +10,10 @@
         <img class='hotImg' src="../images/icon/hot.png" alt="">
       </div>
       <div id="main">
-        <ul v-if="hotData.notePictureMap">
-          <li v-for="(item, index) in hotData.notePictureMap.notepicture" :key="index">
-            <router-link :to="{ path: '/stroll/details', query:{'note_id': item.note_id}}">
-              <img :src="item.picture_url" alt="">
+        <ul v-if="hotData.notePictures">
+          <li v-for="(item, index) in hotData.notePictures" :key="index">
+            <router-link :to="{ path: 'stroll/details', query:{'note_id': hotData.note_id}}">
+              <img :class="{imgVedio: hotData.video_flag == '1'}" :src="item" alt="">
             </router-link>
           </li>
         </ul>
@@ -34,35 +35,33 @@
             <span :class="{active: !tableFlag}">附近的</span>
           </li>
         </ul>
-        <div class='listTotal'>
-          <!-- <img class='imgPoint' src="../images/icon/point.jpg" alt=""> -->
-          <span v-if="listTotalNum">全部{{ listTotalNum }}篇笔记</span>
-          <img class='imgRefresh' src="../images/icon/refresh.jpg" alt="">
-        </div>
         <div class="options" v-if="listData">
           <WaterFall :list="listData"></WaterFall>
         </div>
       </div>
+      <img v-for="(item, index) in bigImgList" :key="index" v-show="false" :src="item">
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import { Base64 } from 'js-base64'
 import WaterFall from '@/components/Waterfall'
 export default {
   name: 'index',
   data () {
     return {
       pagNo: 1,
-      openId: '',
+      openId: window.localStorage.getItem('openId'),
       tableFlag: true, // true,最近的 | false,附近的
       hotData: Object, // 逛逛hot部分
       listTotalNum: '', // 逛逛列表总数
       listData: [], // 列表数据,
       listDataState: false,
-      listDataflag: false
+      listDataflag: false,
+      bigImgList: []
     }
   },
   components: {
@@ -71,29 +70,18 @@ export default {
   created () {
     this.LoadingingStatus(true)
     let self = this
-    self.$http.Wxlogin({
-      code: this.$route.query.code || ''
+    self.$http.HotNote({
+      openid: self.openId
     }).then(response => {
-      /**
-      * 调取微信地图定位信息
-      */
-      // self.bridge.getLocation(function (result) {
-      //   alert(result)
-      // }, function (res) {
-      //   alert(res)
-      // })
-      self.openId = response.content.pub_openid
-      window.localStorage.setItem('openId', response.content.pub_openid)
-    }).then(() => {
-      self.$http.HotNote({
-        openid: self.openId
-      }).then(response => {
-        self.hotData = response.content
-      })
-      self.NewDataFunc(false) // 获取最新list数据
+      response.content.note_name = Base64.decode(response.content.note_name)
+      response.content.note_desc = Base64.decode(response.content.note_desc)
+      if (response.content.notePictures.length > 3) {
+        response.content.notePictures = response.content.notePictures.slice(0, 3)
+      }
+      self.hotData = response.content
     })
+    self.NewDataFunc(false) // 获取最新list数据
   },
-  mounted () {},
   methods: {
     ...mapActions([
       'LoginingStatus',
@@ -118,8 +106,12 @@ export default {
       }).then(response => {
         this.LoadingingStatus(false)
         response.content.noteinfo.map((item, index) => {
+          this.bigImgList.push(item.picture_url)
           let _len = item.picture_url.lastIndexOf('/') + 1
           item.picture_url = item.picture_url.substring(0, _len) + '2x_' + item.picture_url.slice(_len)
+          item.note_name = Base64.decode(item.note_name)
+          item.note_desc = Base64.decode(item.note_desc)
+          // item.image_info = JSON.parse(item.image_info)
         })
         this.listData = this.listData.concat(response.content.noteinfo)
         this.listTotalNum = response.content.note_sum.note_sum
@@ -147,6 +139,13 @@ export default {
         openid: this.openId
       }).then(response => {
         this.LoadingingStatus(false)
+        response.content.noteinfo.map((item, index) => {
+          let _len = item.picture_url.lastIndexOf('/') + 1
+          item.picture_url = item.picture_url.substring(0, _len) + '2x_' + item.picture_url.slice(_len)
+          item.note_name = Base64.decode(item.note_name)
+          item.note_desc = Base64.decode(item.note_desc)
+          // item.image_info = JSON.parse(item.image_info)
+        })
         this.listData = this.listData.concat(response.content.noteinfo)
         this.listTotalNum = response.content.note_sum.note_sum
         this.listDataflag = false
@@ -213,23 +212,34 @@ export default {
     width: 100%;
     background: #fff;
     ul{
-      width: 100%;
       font-size: 0;
+      padding: 0 .12rem;
+      display: flex;
       li{
-        width: 33.3%;
+        width: 1.13rem;
         height: .9rem;
+        margin-left: .06rem;
+        border-radius: .05rem;
+        overflow: hidden;
         &:nth-child(1){
-          margin: 0 0 0 .12rem;
+          margin-left: 0;
         }
-        &:nth-child(2){
-          margin: 0 .06rem;
+        .imgVedio{
+          position: relative;
         }
-        &:nth-child(3){
-          margin: 0 .12rem 0 0;
+        .imgVedio:before{
+          width: 100%;
+          height: .9rem;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgba(0,0,0,.3);
         }
         img{
           width: 100%;
-          height: 100%;
+          height: .9rem;
         }
       }
     }
@@ -312,6 +322,7 @@ export default {
   }
   .options {
     width: 100%;
+    padding: .2rem 0 0 0;
     background: #f4f6fa;
   }
 }

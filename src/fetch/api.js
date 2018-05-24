@@ -5,7 +5,10 @@ axios.defaults.timeout = 50000
 
 const env = process.env.NODE_ENV
 if (env === 'development') {
-  axios.defaults.baseURL = 'http://118.25.13.116:8981/mrsyg'
+  // axios.defaults.baseURL = 'http://118.25.13.116:8981/mrsyg' // 本地测试
+  // axios.defaults.baseURL = 'http://www.xclerk.com' // 生产服务器
+  axios.defaults.baseURL = 'http://test.xclerk.com' // 测试服务器
+  // axios.defaults.baseURL = 'http://xclerk.natappvip.cc'// 本机测试
   axios.defaults.withCredentials = true
 }
 
@@ -22,7 +25,6 @@ axios.interceptors.response.use(response => {
     switch (error.response.status) {
       case 401:
       // 401 跳转到登录页面
-      // alert(error.response.data.message)
         console.log('error')
     }
   }
@@ -71,38 +73,78 @@ export default {
   /* ==================== 所有接口信息 ==================== */
   /* 接口登录 */
   Wxlogin (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/uac/wxpubLogin', params)
+    return post('/yunhe/wechat/login/wxpublogin', params)
+  },
+  /* 微信分享获取注入信息 */
+  WxgetJs (params) {
+    return post('/yunhe/wechat/getJsAuthority', params)
   },
   /* 最热笔记 */
   HotNote (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/hotNote', params)
-  },
-  /* 开发环境免登陆接口 */
-  LoginInfo () {
-    return post('http://118.25.13.116:8981/mrsyg/kquser/Login.form')
-  },
-  /* 逛逛-每日红人 */
-  RecommendAssistant () {
-    return post('http://118.25.13.116:8981/mrsyg/kqgoods/RecommendAssistant.form')
+    return post('/yunhe/wechat/note/hotNote', params)
   },
   /* 笔记详情页,基本信息，推荐商品 */
   NoteInfoDetails (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/noteDetail', params)
+    return post('/yunhe/wechat/note/noteDetail', params)
   },
   /* 笔记详情页,评论详情 */
   commentDetail (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/commentDetail', params)
+    return post('/yunhe/wechat/note/commentDetail', params)
   },
   /* 笔记进行点赞,打赏,收藏过该笔记的人 */
   NoteOperator (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/noteOperator', params)
+    return post('/yunhe/wechat/note/noteOperator', params)
   },
   /* 逛逛-爱达人-最近笔记 */
   LateNote (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/loveNote', params)
+    return post('/yunhe/wechat/note/loveNote', params)
   },
   /* 逛逛-爱达人-最新笔记 */
   NewNote (params) {
-    return post('http://xclerk.natappvip.cc/yunhe/business/note/newNote', params)
+    return post('/yunhe/wechat/note/newNote', params)
+  },
+  /* 逛逛-爱达人-点赞笔记 */
+  zanNewNote (params) {
+    return post('/yunhe/wechat/like/like', params)
+  },
+  /* 逛逛-爱达人-点赞笔记评论 */
+  zanCommitNewNote (params) {
+    return post('/yunhe/wechat/like/commentlike', params)
+  },
+  /* 逛逛-爱达人-收藏笔记 */
+  storeNewNote (params) {
+    return post('/yunhe/wechat/collection/collectionNote', params)
+  },
+  /* 逛逛-爱达人-打赏笔记 */
+  rewardNewNote (params) {
+    return post('/yunhe/wechat/reward/givereward', params)
+  },
+  /* 逛逛-爱达人-打赏笔记确定 */
+  rewardSureNewNote (params) {
+    return post('/yunhe/wechat/reward/surereward', params)
+  },
+  /* 我的优惠券 */
+  MyCoupon (params) {
+    return post('/yunhe/wechat/customer/mycoupon', params)
+  },
+  /* 附近门店 */
+  NearByStore (params) {
+    return post('/yunhe/wechat/shop/goodShop', params)
+  },
+  /* 微信手机号绑定 */
+  bindPhone (params) {
+    return post('/yunhe/wechat/login/registerwxpub', params)
+  },
+  /* 手机验证码 */
+  getIdentifyCode (params) {
+    return post('/yunhe/wechat/login/getIdentifyCode', params)
+  },
+  /* 发表评论 */
+  publishcomment (params) {
+    return post('/yunhe/wechat/comment/publishcomment', params)
+  },
+  /* 我的页面 */
+  customerInfo (params) {
+    return post('/yunhe/wechat/customer/customerinfo', params)
   }
 }

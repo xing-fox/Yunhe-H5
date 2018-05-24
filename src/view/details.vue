@@ -1,24 +1,31 @@
 <template>
   <div>
+    <div v-wechat-title="$route.meta.title"></div>
     <div class='detail'>
       <div id="details">
         <div class="swiper" ref="swipeid">
           <div class="swiper-wrapper" >
-            <div class="swiper-slide" v-for="(item, index) in Data.notePictures" :key="index">
-              <img :src="item" alt="">
+            <div v-if="Data.video_flag == '1'" class="swiper-slide" @click="videoFunc">
+              <video v-show="vedioState" ref="video" :src="Data.note_video" controls="controls"></video>
+              <img :src="Data.video_picture">
+              <div class="vedioImg">
+                <img src="../images/icon/play.png">
+              </div>
+            </div>
+            <div v-if="Data.notePictures" class="swiper-slide" v-for="(item, index) in Data.notePictures" :key="index" @click="showPictureFunc(index)">
+              <img :src="item">
             </div>
           </div>
-          <div class="swiperIndex boxOrent">
+          <div class="swiperIndex boxOrent" v-if='swiperTotal'>
             <span>{{ swiperIndex }}</span> / <span>{{ swiperTotal }}</span>
           </div>
         </div>
         <div class="info">
           <img class="infoImg" :src="Data.customer_picture" alt="">
           <div class="infoAddr">
-            <p>{{ Data.shop_name || '***' }}</p>
-            <p>{{ Data.customer_name }}</p>
+            <p v-if="Data.shop_name">{{ Data.shop_name || '***' }}</p>
+            <p :class="{onlyName: !Data.shop_name}">{{ Data.customer_name }}</p>
           </div>
-          <div class="infoFollow">+ <span>关注</span> </div>
         </div>
         <div class="ads" v-for="(item, index) in Data.noteProducts" :key="index">
           <img class="adsImg" :src="item.picture_url" alt="">
@@ -29,15 +36,19 @@
             <span>{{ Data.note_name }}</span>
           </div>
           <div class="contMain boxOrent">
-            <span>{{ Data.note_desc }}</span>
+            <span v-html="Data.note_desc"></span>
           </div>
+          <div v-if="fromFlag == 1" class="iconImg">
+            <img src="../images/ewm.jpeg" alt="">
+          </div>
+          <div v-if="fromFlag == 1" class="contEwm"><span>买潮机 找店员 超级店猿</span></div>
         </div>
         <div class="timeStar">
           <span class="time">{{ Data.created_at }}</span>
           <span class="collect">{{ Data.note_collection_total }}次收藏</span>
           <span class="zan">{{ Data.note_like_total }}次点赞</span>
         </div>
-        <div class="touxiang" v-if="operatorData">
+        <div class="touxiang">
           <router-link :to="{path: 'details/praise', query:{'note_id': noteId}}">
             <img v-for="(item, index) in operatorData" :key="index" :src="item.customer_picture" alt="">
             <img src="../images/icon/more.png" alt="">
@@ -48,14 +59,6 @@
             <span>用户评价({{ commentData.comment_sum }})</span>
           </div>
           <ul class="evaList">
-            <li>
-              <div class="listImg">
-                <img src="../images/icon/use.png" alt="">
-              </div>
-              <div class="listContent">
-                <span>评论代表关注,属你最用心</span>
-              </div>
-            </li>
             <li v-for="(item, index) in commentData.commentinfo" :key="index">
               <div class="listImg">
                 <img :src="item.customer_picture" alt="">
@@ -65,7 +68,7 @@
                   <span>{{ item.customer_name }}</span>
                 </div>
                 <div class="listContMain boxOrent">
-                  <span>{{ item.comment_content }}</span>
+                  <span v-html="item.comment_content"></span>
                 </div>
                 <div class="timeStars">
                   <div class="time">{{ item.created_at }}</div>
@@ -73,38 +76,17 @@
                     <img src="../images/icon/shang.png" alt="">
                     <span>{{ item.reward_amount }}</span>
                   </div>
-                  <div class="eval">
-                    <!-- <router-link :to="{path: 'details/evalmore'}"> -->
-                    <img src="../images/icon/eval.png" alt="">
-                    <span>{{ item.comment_like_total }}</span>
-                    <!-- </router-link> -->
-                  </div>
-                  <div class="zan">
+                  <div class="zan" @click="zanFunc(item.comment_id, item.customer_id, item.comment_like_flag, index)">
                     <img v-if="item.comment_like_flag == -1" src="../images/icon/admire_1.png" alt="">
                     <img v-else src="../images/icon/admire.png" alt="">
                     <span>{{ item.comment_like_total }}</span>
                   </div>
                 </div>
-                <div class="listEval" v-if="item.reply_info">
-                  <div class="list">
-                    <div class="evalMain">
-                      <span>羊肉烤串:</span>如果以上这些效果不能满足你的需求，你可以仿照animate.css的格式制作一些其他效果
-                    </div>
-                    <div class="timeZan">
-                      <span class="zanTime">08-12 08:32</span>
-                      <img src="../images/icon/admire.png" alt="">
-                      <span class="zanCount">12</span>
-                    </div>
-                    <div class="listSeeMore">
-                      <span>查看剩下3条回复</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </li>
           </ul>
-          <div class="eavMore bor-t" @click="InputChange">
-            <router-link :to="{path: 'details/evalmore'}">
+          <div class="eavMore bor-t">
+            <router-link :to="{path: 'details/evalmore', query:{'note_id': noteId}}">
               <span>查看全部</span>
             </router-link>
           </div>
@@ -112,33 +94,32 @@
       </div>
       <div class="footer bor-t">
         <div class="footerBox">
-          <div class="item" @click="rewardStateFunc">
+          <div class="item" @click="rewardStateFunc" v-show="Data.note_collection_flag">
             <span>赏</span>
             <img src="../images/icon/shang.png" alt="">
           </div>
-          <div class="item" @click="collectFunc">
-            <img v-if="collectState" src="../images/icon/star.png">
-            <img v-else class="animated flash" src="../images/icon/star_1.png">
+          <div class="item" @click="collectFunc(Data.note_collection_flag)" v-show="Data.note_collection_flag">
+            <img v-if="Data.note_collection_flag == 1" src="../images/icon/star.png">
+            <img v-else :class="{animated: collectAnimal, flash: collectAnimal}" src="../images/icon/star_1.png">
           </div>
-          <div class="item" @click="admireFunc">
-            <img v-if="admireState" src="../images/icon/admire.png">
-            <img v-else class="animated bounce" src="../images/icon/admire_1.png">
+          <div class="item" @click="admireFunc(Data.note_like_flag)" v-show="Data.note_like_flag">
+            <img v-if="Data.note_like_flag == 1" src="../images/icon/admire.png">
+            <img v-else :class="{animated: admireAnimal, bounce: admireAnimal}" src="../images/icon/admire_1.png">
           </div>
         </div>
       </div>
-      <!-- <Evalmore v-if="evalmore" class="evalmore animated fadeInRight"></Evalmore> -->
-      <Reward v-if="rewardState" @closed="rewardStateFunc"></Reward>
+      <Reward :data="RewardData" :noteid="Data.note_id" v-if="rewardState" @closed="rewardStateFunc"></Reward>
     </div>
     <router-view/>
   </div>
 </template>
 
 <script>
+import wx from 'wx'
 import { mapActions } from 'vuex'
-import Swiper from 'swiper'
-// import Evalmore from '@/view/evalmore'
+import Swiper from 'Swiper'
+import { Base64 } from 'js-base64'
 import Reward from '@/components/reward'
-import 'swiper/dist/css/swiper.min.css'
 export default {
   name: 'Details',
   props: {
@@ -178,90 +159,186 @@ export default {
       rewardState: false,
       admireState: true,
       collectState: true,
-      swiperTotal: Number,
-      noteId: this.$route.query.note_id
+      swiperTotal: '',
+      RewardData: '',
+      vedioState: false,
+      collectAnimal: false,
+      admireAnimal: false,
+      noteId: this.$route.query.note_id,
+      fromFlag: this.$route.query.from_flag
     }
   },
   components: {
     Swiper,
     Reward
-    // Evalmore
   },
-  created () {
-    this.LoadingingStatus(true)
-    this.$http.NoteInfoDetails({
-      data: JSON.stringify({
-        'note_id': this.$route.query.note_id
-      }),
-      openid: window.localStorage.getItem('openId')
-    }).then(response => {
-      this.Data = response.content
-      this.swiperTotal = this.Data.notePictures.length
-    }).then(() => {
-      this.Dom = new Swiper(this.$refs.swipeid, {
-        direction: this.direction,
-        autoplay: true,
-        loop: this.loop,
-        on: {
-          transitionEnd: () => {
-            this.swiperIndex = this.Dom.activeIndex + 1
-          }
-        }
-      })
-      this.LoadingingStatus(false)
-    })
-
-    this.$http.commentDetail({
-      data: JSON.stringify({
-        'note_id': this.$route.query.note_id
-      }),
-      openid: window.localStorage.getItem('openId')
-    }).then(response => {
-      this.commentData = response.content
-    })
-
-    this.$http.NoteOperator({
-      data: JSON.stringify({
-        'note_id': this.$route.query.note_id,
-        'pag_no': 1,
-        'pag_num': 6
-      }),
-      openid: window.localStorage.getItem('openId')
-    }).then(response => {
-      this.operatorData = response.content.data
-    })
+  mounted () {
+    this.init()
   },
   methods: {
+    init () {
+      let self = this
+      self.commitDetail()
+      self.$http.NoteOperator({
+        data: JSON.stringify({
+          'note_id': self.$route.query.note_id,
+          'pag_no': 1,
+          'pag_num': 6
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+        self.operatorData = response.content.data
+      }).then(() => {
+        self.LoadingingStatus(true)
+        self.$http.NoteInfoDetails({
+          data: JSON.stringify({
+            'note_id': self.$route.query.note_id
+          }),
+          openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        }).then(response => {
+          response.content.note_name = Base64.decode(response.content.note_name)
+          response.content.note_desc = Base64.decode(response.content.note_desc).replace(/\n/g, '<br/>')
+          self.Data = response.content
+          self.swiperTotal = response.content.video_flag === '1' ? self.Data.notePictures.length + 1 : self.Data.notePictures.length
+          self.shareWx()
+        }).then(() => {
+          self.Dom = new Swiper(self.$refs.swipeid, {
+            direction: self.direction,
+            autoplay: true,
+            loop: self.loop,
+            observer: true,
+            observeParents: true,
+            on: {
+              transitionEnd: () => {
+                self.swiperIndex = self.Dom.activeIndex + 1
+              }
+            }
+          })
+          self.LoadingingStatus(false)
+        })
+      })
+    },
+    isAndroid () {
+      let u = window.navigator.userAgent
+      return u.indexOf('Android') > -1 || u.indexOf('Linux') > -1
+    },
+    shareWx () {
+      let self = this
+      let sendUrl = window.localStorage.getItem('shareUrl')
+      if (self.isAndroid()) {
+        sendUrl = window.location.href.split('#')[0]
+      }
+      self.$http.WxgetJs({
+        url: sendUrl
+      }).then(response => {
+        wx.config({
+          debug: false,
+          appId: 'wx8b6bb04ed1ac3b29',
+          timestamp: response.content.timestamp,
+          nonceStr: response.content.noncestr,
+          signature: response.content.signature,
+          jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'previewImage']
+        })
+        wx.ready(function () {
+          wx.onMenuShareTimeline({
+            title: self.Data.note_name,
+            link: 'http://test.xclerk.com/yunhe/wechat/shareServlet?type=1&parameter=' + self.noteId,
+            imgUrl: self.Data.notePictures[0],
+            success: function () {
+            }
+          })
+          wx.onMenuShareAppMessage({
+            title: self.Data.note_name,
+            desc: self.Data.note_desc,
+            link: 'http://test.xclerk.com/yunhe/wechat/shareServlet?type=1&parameter=' + self.noteId,
+            imgUrl: self.Data.notePictures[0],
+            type: '',
+            dataUrl: '',
+            success: function () {
+            }
+          })
+        })
+      })
+    },
     ...mapActions([
       'LoginingStatus',
       'LoadingingStatus'
     ]),
-    admireFunc () {
-      this.admireState = false
-      // this.LoginingStatus(false)
+    admireFunc (arg) {
+      this.admireAnimal = parseInt(arg) !== -1
+      this.Data.note_like_total = parseInt(arg) === -1 ? parseInt(this.Data.note_like_total) - 1 : parseInt(this.Data.note_like_total) + 1
+      this.Data.note_like_flag = parseInt(arg) === 1 ? -1 : 1
+      this.$http.zanNewNote({
+        data: JSON.stringify({
+          'parameter_id': this.Data.note_id,
+          operate: 2
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+      })
     },
-    collectFunc () {
-      this.collectState = false
-      // this.LoginingStatus(false)
+    collectFunc (arg) {
+      this.collectAnimal = parseInt(arg) !== -1
+      this.Data.note_collection_total = parseInt(arg) === -1 ? parseInt(this.Data.note_collection_total) - 1 : parseInt(this.Data.note_collection_total) + 1
+      this.Data.note_collection_flag = parseInt(arg) === 1 ? -1 : 1
+      this.$http.storeNewNote({
+        data: JSON.stringify({
+          'parameter_id': this.Data.note_id,
+          'operate': 4,
+          'type': arg
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {})
     },
     rewardStateFunc (arg) {
       this.rewardState = !this.rewardState
+      this.$http.rewardNewNote({
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+        this.RewardData = response.content
+      })
     },
-    InputChange () {
-      // this.$refs.Inputs.focus()
+    commitDetail () {
+      this.$http.commentDetail({
+        data: JSON.stringify({
+          'note_id': this.$route.query.note_id
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+        for (let i = 0; i < response.content.commentinfo.length; i++) {
+          response.content.commentinfo[i].comment_content = Base64.decode(response.content.commentinfo[i].comment_content)
+        }
+        this.commentData = response.content
+      })
+    },
+    zanFunc (arg1, arg2, arg3, arg4) {
+      this.commentData.commentinfo[arg4].comment_like_flag = parseInt(arg3) === -1 ? 1 : -1
+      this.commentData.commentinfo[arg4].comment_like_total = parseInt(arg3) === -1 ? parseInt(this.commentData.commentinfo[arg4].comment_like_total) - 1 : parseInt(this.commentData.commentinfo[arg4].comment_like_total) + 1
+      this.$http.zanCommitNewNote({
+        data: JSON.stringify({
+          'customer_id': arg2,
+          'comment_id': arg1,
+          'focus_type': 5,
+          'type': parseInt(arg3)
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+        console.log(response.msg)
+      })
+    },
+    videoFunc () {
+      this.vedioState = true
+      this.$refs.video.play()
+    },
+    showPictureFunc (arg) {
+      wx.previewImage({
+        current: this.Data.notePictures[arg],
+        urls: this.Data.notePictures
+      })
     }
   },
   watch: {
-    evalmore (val) {
-      let self = this
-      if (val) {
-        self.bridge.onHistoryBack(function () {
-          self.evalmore = !self.evalmore
-        })
-      } else {
-        self.bridge.onHistoryBack()
-      }
-    }
+    '$route': 'commitDetail'
   }
 }
 </script>
@@ -289,13 +366,50 @@ export default {
       background: #f4f6fa;
       .swiper{
         width: 100%;
-        height: 3.3rem;
-        background: #f4f6fa;
+        height: 3.75rem;
+        background: #000;
         overflow: hidden;
         position: relative;
+        .swiper-slide{
+          font-size: 0;
+          width: 100%;
+          max-height: 3.75rem;
+          position: relative;
+        }
         .swiper-slide img{
           width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          margin: auto auto;
+        }
+        .swiper-slide video{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 3.75rem;
+          z-index: 1;
+        }
+        .swiper-slide .vedioImg{
+          width: 100%;
           height: 100%;
+          background-color: rgba(0,0,0,.5);
+          position: absolute;
+          top: 0;
+          left: 0;
+          img{
+            width: 1rem;
+            height: 1rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto auto;
+          }
         }
         .swiperIndex{
           color: #fff;
@@ -339,6 +453,9 @@ export default {
             color: #666;
             line-height: .18rem;
             margin: .02rem 0 0 .05rem;
+          }
+          &>.onlyName{
+            line-height: .38rem !important;
           }
         }
         .infoFollow{
@@ -399,6 +516,23 @@ export default {
           word-break: break-all;
           text-overflow: ellipsis;
           padding: .1rem .15rem .05rem .17rem;
+          span{
+            white-space: pre-wrap;
+          }
+        }
+        .iconImg{
+          font-size: 0;
+          width: 30%;
+          margin: .3rem 35% .1rem;
+          img{
+            width: 100%;
+          }
+        }
+        .contEwm{
+          color: #666;
+          font-size: .13rem;
+          text-align: center;
+          padding: 0 0 .2rem 0;
         }
       }
       .timeStar{
@@ -491,11 +625,10 @@ export default {
                 margin: .12rem 0 0 0;
                 display: flex;
                 .time{
-                  width: .3rem;
                   vertical-align: middle;
                 }
                 .eval{
-                  width: .6rem;
+                  width: .55rem;
                   text-align: right;
                   img{
                     width: .15rem;
@@ -509,7 +642,7 @@ export default {
                   }
                 }
                 .zan{
-                  width: .6rem;
+                  width: .55rem;
                   text-align: right;
                   img{
                     width: .15rem;
@@ -528,7 +661,7 @@ export default {
                   }
                 }
                 .reward{
-                  width: .55rem;
+                  width: .5rem;
                   margin-left: .05rem;
                   img{
                     width: .15rem;
@@ -591,6 +724,12 @@ export default {
                   color: #4395f7;
                   margin: .1rem 0 0 0;
                 }
+              }
+            }
+            &.evaList_1{
+              a{
+                width: 100%;
+                display: flex;
               }
             }
           }

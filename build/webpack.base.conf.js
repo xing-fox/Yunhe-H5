@@ -24,6 +24,10 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    'wx': 'wx',
+    'Swiper': 'Swiper'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

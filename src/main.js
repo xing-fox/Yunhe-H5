@@ -5,13 +5,17 @@ import App from './App'
 import axios from 'axios'
 import store from '@/store'
 import router from './router'
-import bridge from '@/bridge'
 import http from '@/fetch/api'
 import fastclick from 'fastclick'
+import {Alert, Confirm, Toast} from 'wc-messagebox'
+import 'wc-messagebox/style.css'
+import 'url-search-params-polyfill'
+Vue.use(Alert, {})
+Vue.use(Confirm, {})
+Vue.use(Toast, {})
 
 Vue.prototype.$http = http
 Vue.prototype.axios = axios
-Vue.prototype.bridge = bridge
 Vue.config.productionTip = false
 
 Vue.config.debug = true

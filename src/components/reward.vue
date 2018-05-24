@@ -17,23 +17,31 @@
         <span class="countNum">{{ count }}</span>
         <span class="iconAdd" @click="addFunc"></span>
       </div>
-      <div class="contCommit">
+      <div class="contCommit" @click="commitFunc">
         <span>打赏</span>
       </div>
       <div class="contfooter">
-        <span>您剩余云币数量: {{ remaindCount }}</span>
+        <span>您剩余猿币数量: {{ data.cur_bal }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { Base64 } from 'js-base64'
 export default {
   name: 'reward',
+  props: {
+    data: {
+      type: [Object, String]
+    },
+    noteid: {
+      type: [String, Number]
+    }
+  },
   data () {
     return {
       count: 1,
-      remaindCount: 10,
       rewardMessage: '',
       rewardMesState: false,
       rewardList: [
@@ -42,7 +50,8 @@ export default {
       ]
     }
   },
-  created () {},
+  created () {
+  },
   methods: {
     closeFunc () {
       this.$emit('closed')
@@ -51,7 +60,28 @@ export default {
       this.rewardMessage = this.rewardList[arg]
       this.rewardMesState = false
     },
+    commitFunc () {
+      if (this.data.cur_bal === 0) return false
+      this.$http.rewardSureNewNote({
+        data: JSON.stringify({
+          'cloud_num': this.count,
+          'parameter_id': this.noteid,
+          'comment_content': Base64.encode(this.rewardMessage),
+          'operate': 11,
+          'type': 1
+        }),
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+      }).then(response => {
+        this.$alert({
+          title: '谢谢打赏',
+          content: response.msg
+        }).then(() => {
+          this.$emit('closed')
+        })
+      })
+    },
     addFunc () {
+      if (this.count === this.data.cur_bal) return false
       this.count += 1
     },
     miunsFunc () {
