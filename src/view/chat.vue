@@ -14,7 +14,7 @@
                     <ul>
                      <span>问题列表，点击选择查看问题答案！</span>
                       <li v-for="(item, index) in commentData" :key="index" >
-                        <router-link :to="{path: 'chat/chatdetail', query:{'answer': item.answer}}" >
+                        <router-link :to="{path: 'chat/chatdetail', query:{'answer': index}}" >
                           问题{{ index+1 }} {{ item.question }}
                         </router-link>
                       </li>
@@ -81,6 +81,10 @@ export default {
         this.commentData = this.question
         this.flag = true
         this.message = '展开'
+      }
+    },
+    scrollFunc () {
+      if (this.$refs.rewardBox.scrollTop + document.body.clientHeight + 50 > this.$refs.rewardBox.scrollHeight) {
       }
     }
   }

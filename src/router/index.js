@@ -15,6 +15,7 @@ const Nearbystore = resolve => require(['@/view/nearbystore'], resolve)
 const Personal = resolve => require(['@/view/personal'], resolve)
 const Chat = resolve => require(['@/view/chat'], resolve)
 const Chatdetail = resolve => require(['@/view/chatdetail'], resolve)
+// const Talk = resolve => require(['@/view/talk'], resolve)
 
 Vue.use(Router)
 
@@ -108,5 +109,13 @@ export default new Router({
         }
       ]
     }
+    // {
+    //   path: '/wechat_pub/talk',
+    //   name: 'Talk',
+    //   component: Talk,
+    //   meta: {
+    //     title: '聊天'
+    //   }
+    // }
   ]
 })

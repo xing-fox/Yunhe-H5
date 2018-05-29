@@ -1,6 +1,6 @@
 <template>
      <div>
-    <div class='evalmore' @scroll.stop.prevent="scrollFunc" ref="rewardBox">
+    <div class='evalmore'  ref="rewardBox">
       <div>
         <ul class="evaList">
           <li class="">
@@ -9,7 +9,8 @@
                 <div class="list">
                   <div class="evalMain">
                     <ul>
-                     <span>{{ answer }}</span>
+                     <span>{{ question }}</span>
+                     <p>{{ answer }}</p>
                     </ul>
                   </div>
                 </div>
@@ -26,7 +27,8 @@ export default {
   name: 'Chatdetail',
   data () {
     return {
-      answer: this.$route.query.answer
+      answer: '',
+      question: ''
     }
   },
   created () {
@@ -34,7 +36,19 @@ export default {
   },
   mounted () {},
   methods: {
-    init () {}
+    init () {
+      let that = this
+      this.$http.talklist({
+        data: JSON.stringify({
+          'question': null
+        })
+      }).then(res => {
+        if (res.success && res.content) {
+          that.answer = res.content[this.$route.query.answer].answer
+          that.question = res.content[this.$route.query.answer].question
+        }
+      })
+    }
   }
 }
 </script>

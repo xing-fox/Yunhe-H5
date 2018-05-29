@@ -10,6 +10,7 @@ import fastclick from 'fastclick'
 import {Alert, Confirm, Toast} from 'wc-messagebox'
 import 'wc-messagebox/style.css'
 import 'url-search-params-polyfill'
+
 Vue.use(Alert, {})
 Vue.use(Confirm, {})
 Vue.use(Toast, {})

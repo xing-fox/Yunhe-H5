@@ -9,7 +9,7 @@ if (env === 'development') {
   // axios.defaults.baseURL = 'http://www.xclerk.com' // 生产服务器
   // axios.defaults.baseURL = 'http://test.xclerk.com' // 测试服务器
   // axios.defaults.baseURL = 'http://xclerk.natappvip.cc' // 本机测试
-  axios.defaults.baseURL = 'http://192.168.1.116:8080/content' // 本地测试
+  axios.defaults.baseURL = 'http://localhost:8080/content' // 本地测试
   axios.defaults.withCredentials = true
 }
 
