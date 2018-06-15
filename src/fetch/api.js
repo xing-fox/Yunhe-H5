@@ -7,9 +7,9 @@ const env = process.env.NODE_ENV
 if (env === 'development') {
   // axios.defaults.baseURL = 'http://118.25.13.116:8981/mrsyg' // 本地测试
   // axios.defaults.baseURL = 'http://www.xclerk.com' // 生产服务器
-  // axios.defaults.baseURL = 'http://test.xclerk.com' // 测试服务器
+  axios.defaults.baseURL = 'http://test.xclerk.com' // 测试服务器
   // axios.defaults.baseURL = 'http://xclerk.natappvip.cc' // 本机测试
-  axios.defaults.baseURL = 'http://localhost:8080/content' // 本地测试
+  // axios.defaults.baseURL = 'http://localhost:8080/xclerk' // 本地测试
   axios.defaults.withCredentials = true
 }
 
@@ -151,5 +151,33 @@ export default {
   /* 微聊 */
   talklist (params) {
     return post('/talk/default/gueryTalkDefaultlist', params)
+  },
+  /* 常见问题 */
+  questionlist (params) {
+    return post('/talk/gueryTalkDefaultlist', params)
+  },
+  /** 移动业务 */
+  mobileContractlist (params) {
+    return post('yunhe/wechat/mobileContract/queryMobileContractByCityCode', params)
+  },
+  /** 充值 */
+  getMoneylist (params) {
+    return post('yunhe/wechat/order/rechargeList', params)
+  },
+  /** 判断运营商 */
+  judgePhoneNum (params) {
+    return post('yunhe/wechat/order/phoneList', params)
+  },
+  /** 根据openid获取手机号 */
+  getPhoneNumByOpenid (params) {
+    return post('yunhe/wechat/customer/customerinfocheck', params)
+  },
+  /** 创建订单 */
+  createOrder (params) {
+    return post('yunhe/wechat/order/addrechargeorder', params)
+  },
+  /** 支付 */
+  pay (params) {
+    return post('yunhe/wechat/payment/paymyorder', params)
   }
 }

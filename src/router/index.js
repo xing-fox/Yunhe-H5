@@ -15,7 +15,11 @@ const Nearbystore = resolve => require(['@/view/nearbystore'], resolve)
 const Personal = resolve => require(['@/view/personal'], resolve)
 const Chat = resolve => require(['@/view/chat'], resolve)
 const Chatdetail = resolve => require(['@/view/chatdetail'], resolve)
-// const Talk = resolve => require(['@/view/talk'], resolve)
+const Talk = resolve => require(['@/view/talk'], resolve)
+const Complain = resolve => require(['@/view/complain'], resolve)
+const Evaluate = resolve => require(['@/view/evaluate'], resolve)
+const MobileService = resolve => require(['@/view/mobileService'], resolve)
+const PhoneBill = resolve => require(['@/view/phoneBill'], resolve)
 
 Vue.use(Router)
 
@@ -108,14 +112,49 @@ export default new Router({
           ]
         }
       ]
+    },
+    {
+      path: '/wechat_pub/talk',
+      name: 'Talk',
+      component: Talk,
+      meta: {
+        title: '聊天'
+      }
+    },
+    {
+      path: '/wechat_pub/complain',
+      name: 'Complain',
+      component: Complain,
+      meta: {
+        title: '投诉意见'
+      }
+    },
+    /* 客户评价 */
+    {
+      path: '/wechat_pub/evaluate',
+      name: 'Evaluate',
+      component: Evaluate,
+      meta: {
+        title: '客户评价'
+      }
+    },
+    /* 移动业务 */
+    {
+      path: '/wechat_pub/mobileService',
+      name: 'MobileService',
+      component: MobileService,
+      meta: {
+        title: '移动业务'
+      }
+    },
+    /** 话费充值 */
+    {
+      path: '/wechat_pub/phoneBill',
+      name: 'PhoneBill',
+      component: PhoneBill,
+      meta: {
+        title: '话费充值'
+      }
     }
-    // {
-    //   path: '/wechat_pub/talk',
-    //   name: 'Talk',
-    //   component: Talk,
-    //   meta: {
-    //     title: '聊天'
-    //   }
-    // }
   ]
 })

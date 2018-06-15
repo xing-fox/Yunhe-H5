@@ -50,7 +50,7 @@ export default {
     }
   },
   created () {
-    this.init()
+    // this.init()
   },
   mounted () {},
   methods: {
@@ -74,13 +74,9 @@ export default {
     },
     queryallquestion (flag) {
       if (flag) {
-        this.commentData = this.allquestion
-        this.flag = false
-        this.message = '收回'
+        [this.commentData, this.flag, this.message] = [this.allquestion, false, '收回']
       } else {
-        this.commentData = this.question
-        this.flag = true
-        this.message = '展开'
+        [this.commentData, this.flag, this.message] = [this.question, true, '展开']
       }
     },
     scrollFunc () {
