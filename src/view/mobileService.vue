@@ -22,8 +22,8 @@
                     <span class="arrow"><img src="../images/icon/rightJT.png"/></span>
                     <div @click="getAll(1)">全部</div>
                 </div>
-                <ul  v-for="(item, index) in mobileList" :key="index">
-                    <li>
+                <ul>
+                    <li v-for="(item, index) in mobileList" :key="index">
                         <div>{{ item.contractName }}</div>
                         <img :src= "item.imageUri"   @click="showPictureFunc(item.imageUri)"/>
                     </li>
@@ -36,8 +36,8 @@
                     <span class="arrow"><img src="../images/icon/rightJT.png"/></span>
                     <div @click="getAll(2)" >全部</div>
                 </div>
-                <ul  v-for="(item, index) in broadbandList" :key="index">
-                    <li>
+                <ul>
+                    <li v-for="(item, index) in broadbandList" :key="index">
                         <div>{{ item.contractName }}</div>
                         <img :src= "item.imageUri" alt="" />
                     </li>
@@ -50,8 +50,8 @@
                     <span class="arrow"><img src="../images/icon/rightJT.png"/></span>
                     <div @click="getAll(3)">全部</div>
                 </div>
-                <ul  v-for="(item, index) in bareMachine" :key="index">
-                    <li>
+                <ul>
+                    <li v-for="(item, index) in bareMachine" :key="index">
                         <div>{{ item.contractName }}</div>
                         <img :src= "item.imageUri" />
                     </li>
@@ -73,6 +73,7 @@ export default {
     }
   },
   created () {
+    this.shareWx()
     this.mobileInit()
   },
   methods: {
@@ -84,7 +85,7 @@ export default {
       let that = this
       this.$http.mobileContractlist({
         'contractTypeId': '1',
-        'openid': 'o4FLT1SX1uTrpIbl010Y7GG9CWRE'
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -103,7 +104,7 @@ export default {
       })
       this.$http.mobileContractlist({
         'contractTypeId': '2',
-        'openid': 'o4FLT1SX1uTrpIbl010Y7GG9CWRE'
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -122,7 +123,7 @@ export default {
       })
       this.$http.mobileContractlist({
         'contractTypeId': '3',
-        'openid': 'o4FLT1SX1uTrpIbl010Y7GG9CWRE'
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -145,6 +146,10 @@ export default {
     },
     addFlow () {
       this.$router.push({path: '/wechat_pub/phoneBill', query: {payType: '1'}})
+    },
+    isAndroid () {
+      let u = window.navigator.userAgent
+      return u.indexOf('Android') > -1 || u.indexOf('Linux') > -1
     },
     shareWx () {
       let self = this

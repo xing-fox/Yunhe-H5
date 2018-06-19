@@ -52,7 +52,7 @@ export default {
       let that = this
       this.LoadingingStatus(true)
       this.$http.getPhoneNumByOpenid({
-        'openid': 'oGJVJ5Jx5--nLHkOTU8ot_AarfY8'
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -146,7 +146,7 @@ export default {
           'type': that.payType,
           'parameter_id': '9'
         }),
-        'openid': 'oGJVJ5Jx5--nLHkOTU8ot_AarfY8'
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         if (res.success && res.content) {
           this.mobliePay(res.content.order_no)
@@ -162,7 +162,7 @@ export default {
           'pay_way': '1',
           'coupon_flag': '0'
         }),
-        'openid': 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y',
+        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId'),
         'payfrom': 'wxpub'
       }).then(res => {
         if (res.success && res.content) {
