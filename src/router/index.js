@@ -20,6 +20,7 @@ const Complain = resolve => require(['@/view/complain'], resolve)
 const Evaluate = resolve => require(['@/view/evaluate'], resolve)
 const MobileService = resolve => require(['@/view/mobileService'], resolve)
 const PhoneBill = resolve => require(['@/view/phoneBill'], resolve)
+const GoodsDetails = resolve => require(['@/view/goodsDetails'], resolve)
 
 Vue.use(Router)
 
@@ -152,6 +153,15 @@ export default new Router({
       path: '/wechat_pub/phoneBill',
       name: 'PhoneBill',
       component: PhoneBill,
+      meta: {
+        title: '话费充值'
+      }
+    },
+    /** 商品详情 */
+    {
+      path: '/wechat_pub/goodsDetails',
+      name: 'GoodsDetails',
+      component: GoodsDetails,
       meta: {
         title: '话费充值'
       }

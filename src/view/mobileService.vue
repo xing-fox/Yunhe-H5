@@ -85,7 +85,8 @@ export default {
       let that = this
       this.$http.mobileContractlist({
         'contractTypeId': '1',
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y'
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -104,7 +105,8 @@ export default {
       })
       this.$http.mobileContractlist({
         'contractTypeId': '2',
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y'
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -123,7 +125,8 @@ export default {
       })
       this.$http.mobileContractlist({
         'contractTypeId': '3',
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y'
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -215,6 +218,7 @@ export default {
         ul li img{
             width: .45rem;
             height: .45rem;
+            margin-top: .55rem;
         }
         ul li div{
            font-size: .14rem;
@@ -222,6 +226,7 @@ export default {
            letter-spacing: 0;
            text-align: left;
            margin-top: -0.10rem;
+           margin-left: .035rem;
         }
         ul{
             float: left;
@@ -243,11 +248,11 @@ export default {
                      background: #55B9EB;
                      width: 0.04rem;
                      height: 0.16rem;
-                     margin: .13rem 0 .1rem .1rem;
+                     margin: .15rem 0 .1rem .1rem;
                 }
                 .arrow img{
                     float: right;
-                    margin: .06rem .05rem 0 0;
+                    margin: .07rem .05rem 0 0;
                     width: .2rem;
                     height: .25rem;
                 }

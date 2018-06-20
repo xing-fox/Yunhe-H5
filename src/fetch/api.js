@@ -179,5 +179,29 @@ export default {
   /** 支付 */
   pay (params) {
     return post('yunhe/wechat/payment/paymyorder', params)
+  },
+  /* 所有商品详情 */
+  Goodsinfo (params) {
+    return post('/yunhe/wechat/good/goodinfo', params)
+  },
+  /* 商品详情图文介绍 */
+  Goodsdescribe (params) {
+    return post('/yunhe/wechat/good/goodsdescribe', params)
+  },
+  /* 商品详情产品规格 */
+  Selectparameter (params) {
+    return post('/yunhe/wechat/good/selectparameter', params)
+  },
+  /* 商品详情产品规格选择 */
+  Productdetail (params) {
+    return post('/yunhe/wechat/good/productdetail', params)
+  },
+  /* 商品详情参数描述 */
+  Goodsparameter (params) {
+    return post('/yunhe/wechat/good/goodsparameter', params)
+  },
+  /* 添加购物车 */
+  addCart (params) {
+    return post('/yunhe/wechat/cart/addCart', params)
   }
 }

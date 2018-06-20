@@ -1,22 +1,21 @@
 <template>
 <div class="all">
     <div class="title">
-        <div class="phone"><input type="tel" v-model="phoneNum" placeholder="请输入您的手机号码" v-on:input ="inputFunc"/></div>
+        <div class="phone"><input type="tel" v-model="phoneNum"  v-on:input ="inputFunc"/></div>
         <div class="info">当前充值手机号</div>
     </div>
     <div class="content">
         <div class="money">
             <ul v-for="(item, index) in moneyList" :key="index">
-                <li @click="getMoney(item.product_price, item.parameter_id)" >{{ item.order_name }}</li>
+                <li @click="getMoney(item,index)"  :class="{ active:activeIndex == index}" >{{ item.order_name }}</li>
             </ul>
         </div>
         <div class="pay">
             <p>需付款</p>
-            <span>{{ priceCount }}</span>
-            <div><img src="../images/icon/money.png"/></div>
+            <span>¥{{ priceCount }}</span>
         </div>
         <div class="bottom">
-            <button @click="payMoney">充值</button>
+            <span @click="payMoney">充值</span>
         </div>
     </div>
 </div>
@@ -33,7 +32,8 @@ export default {
       moneyList: [],
       type: '',
       payType: this.$route.query.payType,
-      parameter_id: ''
+      parameter_id: '',
+      activeIndex: -1
     }
   },
   created () {
@@ -52,7 +52,8 @@ export default {
       let that = this
       this.LoadingingStatus(true)
       this.$http.getPhoneNumByOpenid({
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y'
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         this.LoadingingStatus(false)
         if (res.success && res.content) {
@@ -122,9 +123,10 @@ export default {
       })
     },
     // 获取金额
-    getMoney (money, parameterId) {
-      this.priceCount = money
-      this.parameter_id = parameterId
+    getMoney (item, index) {
+      this.priceCount = item.product_price
+      this.parameter_id = item.parameter_id
+      this.activeIndex = index
     },
     // 充值
     payMoney () {
@@ -146,7 +148,8 @@ export default {
           'type': that.payType,
           'parameter_id': '9'
         }),
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y'
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId')
       }).then(res => {
         if (res.success && res.content) {
           this.mobliePay(res.content.order_no)
@@ -162,7 +165,8 @@ export default {
           'pay_way': '1',
           'coupon_flag': '0'
         }),
-        'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId'),
+        openid: 'o4FLT1Qmvvw7sWpGlvx-2jYALS1Y',
+        // 'openid': window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId'),
         'payfrom': 'wxpub'
       }).then(res => {
         if (res.success && res.content) {
@@ -223,90 +227,88 @@ export default {
 </script>
 <style lang="less" scoped>
 .all{
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+  height: 100%;
+  width: 100%;
     .title{
         background: #FFFFFF;
         width: 100%;
-        height: 10%;
+        height: .73rem;
         .phone{
             font-size: 20px;
             color: #000;
-            margin: 0 0px 3px 20px;
-            padding: 0.1rem 0;
+            margin: 0 0px 3px 0;
+            padding: 0.16rem 0;
             input{
                 -webkit-appearance: none;
                 color: #666;
-                font-size: .13rem;
+                font-size: .27rem;
                 border: none;
-                width: 2.9rem;
+                width: 100%;
                 height: .29rem;
-                margin: .08rem 0 0 .15rem;
+                outline:none;
                 padding: 0 0 0 .1rem;
-                border: 1px solid #ddd;
-                border-radius: .05rem;
-                box-sizing: border-box;
+                margin-left: 0rem
             }
         }
         .info{
-            font-size: 12px;
+            font-size: .14rem;
             color: #999999;
-            margin: -0.11rem 0 .03rem 0.35rem;
+            margin: -.18rem 0 .03rem .15rem;
         }
     }
     .content{
         width: 100%;
         margin-top: 5px;
         background: #FFFFFF;
-        height: 90%;
+        height: 5.2rem;
         .money{
             overflow: hidden;
             width: 100%;
+            ul{
+              margin-top: .43rem;
+            }
             ul li{
                 float: left;
-                font-size: 14px;
-                border: 1px solid #DDDDDD;;
-                height: 40px;
-                width: 25%;
-                margin: 30px 0px 0px 22px;
+                font-size: .18rem;
+                color: #333333;
+                border: 1px solid #CCCCCC;
+                height: .61rem;
+                width: 1.1rem;
+                margin: 0 .05rem .15rem .07rem;
                 text-align: center;
-                padding-top: 15px;
+                line-height: .61rem;
+                border-radius: .05rem;
+                &.active{
+                  background-color: #ffda44;
+                }
             }
         }
         .pay{
             overflow: hidden;
+            margin-top: .47rem;
             p{
-                font-size: 15px;
+                font-size: .14rem;
                 float: left;
-                margin: 40px 0 10px 20px;
+                margin-left: .15rem;
             }
             span{
-                font-size: 15px;
+                font-size: .2rem;
                 float: right;
-                margin: 40px 30px 0px 10px;
-                color: #d81e06;
-            }
-            div img{
-                float: right;
-                height: 23px;
-                width: 23px;
-                margin: 39px 0px 0px 0px;
+                margin-right: .16rem;
+                color: #FF5959;
             }
         }
-        button{
-            width: 3.15rem;
-            height: 0.5rem;
+        .bottom span{
+            width: 100%;
+            height: .51rem;
             background: #FFDA44;
-            border-radius: 5px;
+            line-height: .51rem;
             font-size: .16rem;
             color: #222222;
             letter-spacing: 0.61px;
             text-align: center;
-            margin: 0 0.3rem;
-            position: absolute;
-            bottom: 0.3rem;
+            position: fixed;
+            bottom: 0;
         }
     }
 }
