@@ -7,9 +7,9 @@ const env = process.env.NODE_ENV
 if (env === 'development') {
   // axios.defaults.baseURL = 'http://118.25.13.116:8981/mrsyg' // 本地测试
   // axios.defaults.baseURL = 'http://www.xclerk.com' // 生产服务器
-  axios.defaults.baseURL = 'http://test.xclerk.com' // 测试服务器
+  axios.defaults.baseURL = 'https://test.xclerk.com' // 测试服务器
   // axios.defaults.baseURL = 'http://xclerk.natappvip.cc' // 本机测试
-  // axios.defaults.baseURL = 'http://localhost:8080/xclerk' // 本地测试
+  // axios.defaults.baseURL = 'http://localhost:8080/content' // 本地测试
   axios.defaults.withCredentials = true
 }
 
@@ -151,6 +151,34 @@ export default {
   /* 微聊 */
   talklist (params) {
     return post('/talk/default/gueryTalkDefaultlist', params)
+  },
+  /* 最新活动 */
+  ShopActionInfo (params) {
+    return post('/yunhe/wechat/activity/ShopActionInfo', params)
+  },
+  /* 最新活动提交评论留言 */
+  commentShopAction (params) {
+    return post('/yunhe/wechat/activity/commentShopAction', params)
+  },
+  /* 最新活动详情列表数据 */
+  ShopActionDetail (params) {
+    return post('/yunhe//wechat/activity/ShopActionDetail', params)
+  },
+  /* 最新活动中笔记评论列表数据 */
+  ShopActionDetailNoteComment (params) {
+    return post('/yunhe/wechat/activity/ShopActionDetailNoteComment', params)
+  },
+  /* 最新活动中评论点赞 */
+  commentlike (params) {
+    return post('/yunhe/wechat/like/commentlike', params)
+  },
+  /* 最新活动中笔记点赞 */
+  like (params) {
+    return post('/yunhe/wechat/like/like', params)
+  },
+  /* 最新活动中参加活动 */
+  joinShopAction (params) {
+    return post('/yunhe/wechat/activity/joinShopAction', params)
   },
   /* 常见问题 */
   questionlist (params) {

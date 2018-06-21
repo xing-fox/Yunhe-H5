@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 Vue.use(require('vue-wechat-title'))
 
 /*
@@ -15,6 +16,10 @@ const Nearbystore = resolve => require(['@/view/nearbystore'], resolve)
 const Personal = resolve => require(['@/view/personal'], resolve)
 const Chat = resolve => require(['@/view/chat'], resolve)
 const Chatdetail = resolve => require(['@/view/chatdetail'], resolve)
+const latestActivity = resolve => require(['@/view/latestActivities'], resolve)
+const shopActivity = resolve => require(['@/view/shop_activity/index'], resolve)
+const commentArea = resolve => require(['@/view/shop_activity/children/commentArea'], resolve)
+// const Talk = resolve => require(['@/view/talk'], resolve)
 const Talk = resolve => require(['@/view/talk'], resolve)
 const Complain = resolve => require(['@/view/complain'], resolve)
 const Evaluate = resolve => require(['@/view/evaluate'], resolve)
@@ -165,6 +170,28 @@ export default new Router({
       meta: {
         title: '话费充值'
       }
+    },
+    {
+      path: '/latest_activity',
+      name: 'latestActivity',
+      component: latestActivity,
+      meta: {
+        title: '最新活动'
+      }
+    },
+    {
+      path: '/shopActivity',
+      name: 'shopActivity',
+      component: shopActivity,
+      meta: {
+        title: '门店详情'
+      },
+      children: [
+        {
+          path: 'commentArea',
+          component: commentArea
+        }
+      ]
     }
   ]
 })
