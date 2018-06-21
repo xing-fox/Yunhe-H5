@@ -168,6 +168,10 @@ export default {
   ShopActionDetailNoteComment (params) {
     return post('/yunhe/wechat/activity/ShopActionDetailNoteComment', params)
   },
+  /* 最新活动中笔记领取优惠劵 */
+  getShopActionCoupon (params) {
+    return post('/yunhe/wechat/activity/getShopActionCoupon', params)
+  },
   /* 最新活动中评论点赞 */
   commentlike (params) {
     return post('/yunhe/wechat/like/commentlike', params)

@@ -1,10 +1,17 @@
 <template>
     <div>
         <div class="shop-activity-banner" :style="{backgroundImage: !content.action.action_video?'url('+content.action.action_picture+')':'none'}">
-            <template v-if="content.action.action_video != 'undefined'">
-                <div class='video-mask-img' :style="{backgroundImage: 'url('+content.action.action_picture+')'}"></div>
-                <i class="video-ico-play" style="background-image: url(./img/btn_play@3x.png)" @click="videoBtnPlay()"></i>
-                <video preload="none" class="shop-video" src="content.action.action_video" playsinline onplay="videoPlay()" onpause="videoPause()"></video>
+            <template v-if="content.action.action_video">
+                <div class='video-mask-img' :style="{backgroundImage: 'url('+content.action.action_picture+')'}" v-show="!isPlay"></div>
+                <i class="video-ico-play" @click="videoBtnPlay()" v-show="!isPlay"></i>
+                <video preload="none"
+                       id="videoPlay"
+                       class="shop-video"
+                       :src="content.action.action_video"
+                       playsinline @play="videoPlay()"
+                       @pause="videoPause()"
+                       :controls="isPlay"
+                ></video>
             </template>
         </div>
         <div class="shop-activity-section shop-activity-interact">
@@ -35,7 +42,7 @@
                     </div>
                     <div class="shop-activity-coupon-right yht_td">
                          <span class="shop-activity-coupon-receive">
-                             <span v-if="content.action.action_coupon_flag == 1">立即<br/>领取</span>
+                             <span v-if="content.action.action_coupon_flag == 1" @click="getCoupon()">立即<br/>领取</span>
                              <span v-else>已领取</span>
                          </span>
                     </div>
@@ -43,8 +50,9 @@
             </template>
 
             <!--门店活动部分-->
-            <template v-if="content.shop && content.shop.length>0">
+            <template>
                 <div class="shop-activity-section shop-activity-store">
+                  <template v-if="content.shop && content.shop.length>0">
                     <div class="shop-activity-arrow-title shop-activity-borderline">
                         <svg class="icon icon-mendianhuodong" aria-hidden="true">
                             <use xlink:href="#icon-mendianhuodong"></use>
@@ -52,33 +60,32 @@
                         <span class="arrow-text">活动门店</span>
                         <i class="arrow fr" data-href="/wechat_pub/bystore">全部&gt;</i>
                     </div>
-                    <template v-if="content.shop.length>0">
-                        <div class="shop-activity-store-info shop-activity-borderline">
-                            <div class="shop-activity-store-info-hd yht_table">
-                                <div class="shopName yht_td">{{ content.shop[0].shop_name }}</div>
-                                <!-- <div class="shopChat yht_td">
-                                     <svg class="icon icon-ico_chat" aria-hidden="true">
-                                         <use xlink:href="#icon-ico_chat"></use>
-                                     </svg>
-                                     微聊
-                                 </div>-->
-                                <div class="shopTel yht_td">
-                                    <a :href="'tel:'+content.shop[0].shop_mobile">
-                                        <svg class="icon icon-ico_iphone" aria-hidden="true">
-                                            <use xlink:href="#icon-ico_iphone"></use>
-                                        </svg>
-                                        电话
-                                    </a>
-                                </div>
+                    <div class="shop-activity-store-info shop-activity-borderline">
+                        <div class="shop-activity-store-info-hd yht_table">
+                            <div class="shopName yht_td">{{ content.shop[0].shop_name }}</div>
+                            <!-- <div class="shopChat yht_td">
+                                 <svg class="icon icon-ico_chat" aria-hidden="true">
+                                     <use xlink:href="#icon-ico_chat"></use>
+                                 </svg>
+                                 微聊
+                             </div>-->
+                            <div class="shopTel yht_td">
+                                <a :href="'tel:'+content.shop[0].shop_mobile">
+                                    <svg class="icon icon-ico_iphone" aria-hidden="true">
+                                        <use xlink:href="#icon-ico_iphone"></use>
+                                    </svg>
+                                    电话
+                                </a>
                             </div>
-                            <p class="shop-activity-store-info-addr">
-                                <i class="icon iconfont icon-ico_site">{{ content.shop[0].shop_address }}</i>
-                            </p>
-                            <p class="shop-activity-store-info-time">
-                                <i class="icon iconfont icon-ico_time">周一~周日 {{ content.shop[0].work_time }}~{{ content.shop[0].endwork_time }}</i>
-                            </p>
                         </div>
-                    </template>
+                        <p class="shop-activity-store-info-addr">
+                            <i class="icon iconfont icon-ico_site">{{ content.shop[0].shop_address }}</i>
+                        </p>
+                        <p class="shop-activity-store-info-time">
+                            <i class="icon iconfont icon-ico_time">周一~周日 {{ content.shop[0].work_time }}~{{ content.shop[0].endwork_time }}</i>
+                        </p>
+                    </div>
+                  </template>
                     <!--商品信息-->
                     <div class="shop-activity-goodsInfo">
                         <p class="shop-activity-goodsInfo-content">
@@ -134,6 +141,20 @@
             </div>
         </div>
         <div class="shop-activity-footer-empty"></div>
+        <!--优惠劵领取弹出层-->
+        <template v-if="content.coupon && content.coupon.length>0 && getCouponMsg">
+            <div class="getCoupon-dialog-mask"></div>
+            <div class="getCoupon-dialog">
+                <h2 class="getCoupon-dialog-title">优惠劵已领取
+                    <i class="icon iconfont icon-close" @click="getCouponMsg = false"></i>
+                </h2>
+                <div class="getCoupon-dialog-body yht_table">
+                    <div class="yht_td price">￥{{ content.coupon[0].serve_amount }}</div>
+                    <div class="yht_td price_needs">优惠劵<br/>满{{ content.coupon[0].coupon_amount }}元可用</div>
+                </div>
+            </div>
+        </template>
+        <!--信息提示弹出框-->
         <msg :msg="msgContent" v-if="msgHide" v-on:closeMsg="closeMsg()"></msg>
         <router-view/>
     </div>
@@ -156,11 +177,14 @@ export default {
   },
   data () {
     return {
+      _dom: '',
+      isPlay: false,
       actionId: '',
       writeAreaOpen: false,
       content: {},
       msgContent: '',
-      msgHide: false
+      msgHide: false,
+      getCouponMsg: false
     }
   },
   computed: {
@@ -258,6 +282,34 @@ export default {
           }
         })
       }
+    },
+    /* 领取优惠劵 */
+    getCoupon () {
+      let that = this
+      that.$http.getShopActionCoupon({
+        openid: window.localStorage.getItem('openId') || window.sessionStorage.getItem('openId'),
+        data: JSON.stringify({
+          'action_id': that.actionId,
+          'coupon_standard_id': that.content.coupon[0].coupon_id
+        })
+      }).then(res => {
+        if (res.success && res.code === 'E00000') {
+          that.getCouponMsg = true
+        }
+      })
+    },
+    /* 视频按钮点击播放 */
+    videoBtnPlay () {
+      this._dom = document.getElementById('videoPlay')
+      this._dom.play()
+    },
+    /* 视频按钮停止播放触发事件 */
+    videoPause () {
+      this.isPlay = false
+    },
+    /* 视频按钮播放时触发事件 */
+    videoPlay () {
+      this.isPlay = true
     }
   },
   beforeCreate: function () {
@@ -401,7 +453,7 @@ export default {
     .shop-activity-banner .video-ico-play{
         width: .5625rem;
         height: .5625rem;
-        background: none center center no-repeat;
+        background: url(./img/btn_play@3x.png) center center no-repeat;
         background-size: cover;
         top: 50%;
         left: 50%;
@@ -678,5 +730,55 @@ export default {
     }
     .shop-activity-footer-empty{
         height: .5rem;
+    }
+    /*弹框样式*/
+    .getCoupon-dialog-mask{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,.4);
+        z-index: 988;
+    }
+    .getCoupon-dialog{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 80%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        background-color: #fff;
+        border-radius: .0703rem;
+        padding: .1875rem .1172rem;
+        box-sizing: border-box;
+        z-index: 999;
+    }
+    .getCoupon-dialog-title{
+        text-align: center;
+        font-size: .16rem;
+        position: relative;
+    }
+    .getCoupon-dialog-title .icon-close{
+        float: right;
+        color: #ccc;
+    }
+    .getCoupon-dialog-body{
+        width: 100%;
+        border: .01rem solid #f0f0f0;
+        border-radius: .0703rem;
+        padding: .2344rem 0;
+        margin-top: .1406rem;
+    }
+    .getCoupon-dialog-body .price{
+        text-align: center;
+        font-size: .28rem;
+        vertical-align: middle;
+        color: #E2330B;
+    }
+    .getCoupon-dialog-body .price_needs{
+        vertical-align: middle;
+        font-size: .14rem;
+        color: #999;
     }
 </style>
