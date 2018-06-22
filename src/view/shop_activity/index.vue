@@ -1,14 +1,14 @@
 <template>
     <div style="position: relative;width: 100%;height: 100%;">
         <div class="app">
-            <div class="shop-activity-banner" :style="{backgroundImage: !content.action.action_video?'url('+content.action.action_picture+')':'none'}">
-                <template v-if="content.action.action_video">
-                    <div class='video-mask-img' :style="{backgroundImage: 'url('+content.action.action_picture+')'}" v-show="!isPlay"></div>
+            <div class="shop-activity-banner" :style="{backgroundImage: !action.action_video?'url('+action.action_picture+')':'none'}">
+                <template v-if="action.action_video">
+                    <div class='video-mask-img' :style="{backgroundImage: 'url('+action.action_picture+')'}" v-show="!isPlay"></div>
                     <i class="video-ico-play" @click="videoBtnPlay()" v-show="!isPlay"></i>
                     <video preload="none"
                         id="videoPlay"
                         class="shop-video"
-                        :src="content.action.action_video"
+                        :src="action.action_video"
                         playsinline @play="videoPlay()"
                         @pause="videoPause()"
                         :controls="isPlay"
@@ -18,32 +18,32 @@
             <div class="shop-activity-section shop-activity-interact">
                 <div class="shop-activity-abstract yht_table">
                     <div class="shop-activity-abstract-left yht_td">
-                        <h4 class="shop-activity-title">{{ content.action.action_title }}</h4>
-                        <p class="shop-activity-join-total"><span class="join-total">{{ content.action.join_total_f }}</span>人已参加</p>
+                        <h4 class="shop-activity-title">{{ action.action_title }}</h4>
+                        <p class="shop-activity-join-total"><span class="join-total">{{ action.join_total_f }}</span>人已参加</p>
                     </div>
                     <div class="shop-activity-abstract-right yht_td " @click="goJoin()">
-                        <i :class="{'icon iconfont icon-ico_success':true,activeNoAnimate: content.action.action_join_flag == -1}">
-                            <div class="join-text" v-if="content.action.action_join_flag == -1">我已参加</div>
+                        <i :class="{'icon iconfont icon-ico_success':true,activeNoAnimate: action.action_join_flag == -1}">
+                            <div class="join-text" v-if="action.action_join_flag == -1">我已参加</div>
                             <div class="join-text" v-else>我要参加</div>
                         </i>
                     </div>
                 </div>
                 <!--优惠劵部分-->
-                <template v-if="content.coupon && content.coupon.length>0">
-                    <div :class="{'shop-activity-coupon yht_table':true,late: content.action.action_coupon_flag == -1}">
+                <template v-if="coupon && coupon.length>0">
+                    <div :class="{'shop-activity-coupon yht_table':true,late: action.action_coupon_flag == -1}">
                         <div class="shop-activity-coupon-left yht_td">
                             <div class="shop-activity-coupon-useLimit">
-                                <div class="shop-activity-coupon-price">￥<span>{{ content.coupon[0].serve_amount }}</span></div>
+                                <div class="shop-activity-coupon-price">￥<span>{{ coupon[0].serve_amount }}</span></div>
                                 <div class="shop-activity-coupon-term">
-                                    <p> {{ content.coupon[0].remarks }} </p>
-                                    <p>满{{ content.coupon[0].coupon_amount }}元可用</p>
+                                    <p> {{ coupon[0].remarks }} </p>
+                                    <p>满{{ coupon[0].coupon_amount }}元可用</p>
                                 </div>
                             </div>
-                            <div class="shop-activity-coupon-useTime">有效期：{{ content.coupon[0].effective_date }} 至 {{ content.coupon[0].expire_date }}</div>
+                            <div class="shop-activity-coupon-useTime">有效期：{{ coupon[0].effective_date }} 至 {{ coupon[0].expire_date }}</div>
                         </div>
                         <div class="shop-activity-coupon-right yht_td">
                             <span class="shop-activity-coupon-receive">
-                                <span v-if="content.action.action_coupon_flag == 1" @click="getCoupon()">立即<br/>领取</span>
+                                <span v-if="action.action_coupon_flag == 1" @click="getCoupon()">立即<br/>领取</span>
                                 <span v-else>已领取</span>
                             </span>
                         </div>
@@ -53,7 +53,7 @@
                 <!--门店活动部分-->
                 <template>
                     <div class="shop-activity-section shop-activity-store">
-                    <template v-if="content.shop && content.shop.length>0">
+                    <template v-if="shop && shop.length>0">
                         <div class="shop-activity-arrow-title shop-activity-borderline">
                             <svg class="icon icon-mendianhuodong" aria-hidden="true">
                                 <use xlink:href="#icon-mendianhuodong"></use>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="shop-activity-store-info shop-activity-borderline">
                             <div class="shop-activity-store-info-hd yht_table">
-                                <div class="shopName yht_td">{{ content.shop[0].shop_name }}</div>
+                                <div class="shopName yht_td">{{ shop[0].shop_name }}</div>
                                 <!-- <div class="shopChat yht_td">
                                     <svg class="icon icon-ico_chat" aria-hidden="true">
                                         <use xlink:href="#icon-ico_chat"></use>
@@ -73,7 +73,7 @@
                                     微聊
                                 </div>-->
                                 <div class="shopTel yht_td">
-                                    <a :href="'tel:'+content.shop[0].shop_mobile">
+                                    <a :href="'tel:'+shop[0].shop_mobile">
                                         <svg class="icon icon-ico_iphone" aria-hidden="true">
                                             <use xlink:href="#icon-ico_iphone"></use>
                                         </svg>
@@ -82,24 +82,24 @@
                                 </div>
                             </div>
                             <p class="shop-activity-store-info-addr">
-                                <i class="icon iconfont icon-ico_site">{{ content.shop[0].shop_address }}</i>
+                                <i class="icon iconfont icon-ico_site">{{ shop[0].shop_address }}</i>
                             </p>
                             <p class="shop-activity-store-info-time">
-                                <i class="icon iconfont icon-ico_time">周一~周日 {{ content.shop[0].work_time }}~{{ content.shop[0].endwork_time }}</i>
+                                <i class="icon iconfont icon-ico_time">周一~周日 {{ shop[0].work_time }}~{{ shop[0].endwork_time }}</i>
                             </p>
                         </div>
                     </template>
                         <!--商品信息-->
                         <div class="shop-activity-goodsInfo">
                             <p class="shop-activity-goodsInfo-content">
-                                &#12288;&#12288;{{ content.action.action_content }}                    </p>
+                                &#12288;&#12288;{{ action.action_content }}                    </p>
                             <div class="shop-activity-goodsInfo-pic">
-                                <img v-for="(item,index) in content.action.picturePOList" src="item.picture_url" alt="" :key="index">
+                                <img v-for="(item,index) in action.picturePOList" src="item.picture_url" alt="" :key="index">
                             </div>
                             <!--限时购商品-->
-                            <div class="shop-activity-limitedGood" v-if="content.goods && content.goods.length >0">
+                            <div class="shop-activity-limitedGood" v-if="goods && goods.length >0">
                                 <template>
-                                    <div class="yht_table" v-for="(item,index) in content.goods" :key="index">
+                                    <div class="yht_table" v-for="(item,index) in goods" :key="index">
                                         <div class="yht_td yht_td_hd" :style="{backgroundImage: 'url('+item.picture_url+')'}"></div>
                                         <div class="yht_td yht_td_bd">
                                             <p class="info">{{ item.product_name }}</p>
@@ -112,7 +112,7 @@
                     </div>
                 </template>
                 <!--互动区-->
-                <div class="shop-activity-interact" v-if="content.note || content.comment">
+                <div class="shop-activity-interact" v-if="note || comment">
 
                     <div class="shop-activity-arrow-title shop-activity-borderline">
                         <svg class="icon icon-hudongqu" aria-hidden="true">
@@ -123,11 +123,11 @@
                         <i class="arrow fr" >全部&gt;</i>
                         </router-link>
                     </div>
-                    <template v-if="content.note && content.note.length">
-                        <noteItem v-for="( item, index ) in content.note" :dataItem="item" v-on:zanClick="zanClick(index,'note')" :key="index" ></noteItem>
+                    <template v-if="note && note.length">
+                        <noteItem v-for="( item, index ) in note" :dataItem="item" v-on:zanClick="zanClick(index,'note')" :key="item.note_id" ></noteItem>
                     </template>
-                    <template v-if="content.comment && content.comment.length>0">
-                        <commentItem v-for="( item, index ) in content.comment" :dataItem="item" v-on:zanClick="zanClick(index,'comment')" :key="index"></commentItem>
+                    <template v-if="comment && comment.length>0">
+                        <commentItem v-for="( item, index ) in comment" :dataItem="item" v-on:zanClick="zanClick(index,'comment')" :key="index"></commentItem>
                     </template>
                 </div>
                 <writeArea :parameterId="actionId" v-on:writeSubmit="writeSubmit(arguments)" v-if="writeAreaOpen"></writeArea>
@@ -137,9 +137,9 @@
                 </div>
                 <div class="shop-activity-footer-operate yht_table">
                 <span class="yht_td btn-join js_join">
-                    <i :class="{icon:true, iconfont: true, 'icon-ico_success': true, active: content.action.action_join_flag == -1}" @click="goJoin()"></i>
+                    <i :class="{icon:true, iconfont: true, 'icon-ico_success': true, active: action.action_join_flag == -1}" @click="goJoin()"></i>
                     我
-                    <span v-if="content.action.action_join_flag == -1">已</span>
+                    <span v-if="action.action_join_flag == -1">已</span>
                     <span v-else>要</span>
                     参加
                 </span>
@@ -148,15 +148,15 @@
             </div>
             <div class="shop-activity-footer-empty"></div>
             <!--优惠劵领取弹出层-->
-            <template v-if="content.coupon && content.coupon.length>0 && getCouponMsg">
+            <template v-if="coupon && coupon.length>0 && getCouponMsg">
                 <div class="getCoupon-dialog-mask"></div>
                 <div class="getCoupon-dialog">
                     <h2 class="getCoupon-dialog-title">优惠劵已领取
                         <i class="icon iconfont icon-close" @click="getCouponMsg = false"></i>
                     </h2>
                     <div class="getCoupon-dialog-body yht_table">
-                        <div class="yht_td price">￥{{ content.coupon[0].serve_amount }}</div>
-                        <div class="yht_td price_needs">优惠劵<br/>满{{ content.coupon[0].coupon_amount }}元可用</div>
+                        <div class="yht_td price">￥{{ coupon[0].serve_amount }}</div>
+                        <div class="yht_td price_needs">优惠劵<br/>满{{ coupon[0].coupon_amount }}元可用</div>
                     </div>
                 </div>
             </template>
@@ -188,6 +188,12 @@ export default {
       actionId: '',
       writeAreaOpen: false,
       content: {},
+      action: {},
+      comment: {},
+      coupon: {},
+      goods: {},
+      note: {},
+      shop: {},
       msgContent: '',
       msgHide: false,
       getCouponMsg: false
@@ -279,10 +285,10 @@ export default {
           .then(res => {
             if (res.success && res.code === 'E00000') {
               if (res.content.comment && res.content.comment.length > 0) {
-                that.content.comment = res.content.comment
+                that.comment = res.content.comment
               }
               if (res.content.note && res.content.note.length > 0) {
-                that.content.note = res.content.note
+                that.note = res.content.note
               }
             }
           })
@@ -290,7 +296,7 @@ export default {
     },
     /* 点击我要参加活动事件 */
     goJoin () {
-      if (this.content.action.action_join_flag === -1) {
+      if (this.action.action_join_flag === -1) {
         return false
       } else {
         let that = this
@@ -305,9 +311,9 @@ export default {
           })
           .then(res => {
             if (res.success && res.code === 'E00000') {
-              that.content.action.action_join_flag = -1
-              that.content.action.join_total_f =
-                parseInt(that.content.action.join_total_f) + 1
+              that.action.action_join_flag = -1
+              that.action.join_total_f =
+                parseInt(that.action.join_total_f) + 1
               that.msgContent = '您已参加活动'
               that.msgHide = true
             }
@@ -325,7 +331,7 @@ export default {
             window.sessionStorage.getItem('openId'),
           data: JSON.stringify({
             action_id: that.actionId,
-            coupon_standard_id: that.content.coupon[0].coupon_id
+            coupon_standard_id: that.coupon[0].coupon_id
           })
         })
         .then(res => {
@@ -375,7 +381,12 @@ export default {
       })
       .then(res => {
         if (res.success && res.code === 'E00000') {
-          that.content = res.content
+          that.action = res.content.action
+          that.comment = res.content.comment
+          that.coupon = res.content.coupon
+          that.goods = res.content.goods
+          that.note = res.content.note
+          that.shop = res.content.shop
         }
       })
   },
