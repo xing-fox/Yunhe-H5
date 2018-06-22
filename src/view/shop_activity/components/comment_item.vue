@@ -14,8 +14,8 @@
                             </svg>
                            <span class="num"><%=  _.numChange(iem.reply_total) %></span>
                         </span>-->
-            <span class="yht_td yht_td_zan">
-                <svg :class="dataItem.comment_like_flag == -1 && isAnimate?'icon icon-ico_zan active':'icon icon-ico_zan'" aria-hidden="true" v-on:click="$emit('zanClick')">
+            <span class="yht_td yht_td_zan" v-on:click="$emit('zanClick')">
+                <svg :class="dataItem.comment_like_flag == -1 && isAnimate?'icon icon-ico_zan active':'icon icon-ico_zan'" aria-hidden="true" >
                   <use :xlink:href="dataItem.comment_like_flag == -1?'#icon-ico_zan':'#icon-zan'"></use>
                     <!--<use xlink:href="#icon-zan"></use>-->
                 </svg>
