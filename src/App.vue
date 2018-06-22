@@ -20,17 +20,20 @@ export default {
     /**
      * 登录接口信息
      */
-    this.$http.Wxlogin({
-      code: this.getQueryString('code') || ''
-    }).then(res => {
-      console.log(res)
-      if (res.success) {
-        window.localStorage.setItem('openId', res.content.pub_openid)
-      }
-      window.localStorage.setItem('shareUrl', location.href.split('#')[0])
-    }).catch(err => {
-      console.log(err)
-    })
+//  this.$http.Wxlogin({
+//    code: this.getQueryString('code') || ''
+//  }).then(res => {
+//    console.log(res)
+//    if (res.success) {
+//      window.localStorage.setItem('openId', res.content.pub_openid)
+//    }
+//    window.localStorage.setItem('shareUrl', location.href.split('#')[0])
+//  }).catch(err => {
+//    console.log(err)
+//  })
+    	window.localStorage.setItem('openId', 'oGJVJ5HcsYHWnq-NGlxWE3jcKpRA')
+	console.log(window.localStorage.getItem('openId'))
+
   },
   computed: {
     ...mapState({

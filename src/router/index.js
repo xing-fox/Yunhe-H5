@@ -172,7 +172,7 @@ export default new Router({
       }
     },
     {
-      path: '/latest_activity',
+      path: '/wechat_pub/latest_activity',
       name: 'latestActivity',
       component: latestActivity,
       meta: {
@@ -180,7 +180,7 @@ export default new Router({
       }
     },
     {
-      path: '/shopActivity',
+      path: '/wechat_pub/shopActivity',
       name: 'shopActivity',
       component: shopActivity,
       meta: {

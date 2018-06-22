@@ -2,7 +2,7 @@
     <div class="activity_items js_activity_items" id="latest_activity">
         <!--<div v-wechat-title="$route.meta.title"></div>-->
         <template v-for="( item, index) in data">
-            <router-link :to="{ path:'/shopActivity',query:{ action_id : item.action_id }}" :key="index">
+            <router-link :to="{ path:'/wechat_pub/shopActivity',query:{ action_id : item.action_id }}" :key="index">
                 <div class="activity_items_item" :style="{ backgroundImage: 'url('+item.action_picture+')'}"
                      :data-url='item.action_id'>
                     <div class="activity_items_item_ft">

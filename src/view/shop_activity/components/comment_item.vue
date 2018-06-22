@@ -148,7 +148,11 @@
 
 <script>
 export default {
-  props: ['dataItem', ''],
+    props: {
+      dataItem:{
+          type: [Object, String]
+      }
+  },
   data () {
     return {
       isAnimate: false
@@ -188,7 +192,7 @@ export default {
   /* 1.在beforeCreate和created钩子之间，程序开始监控Data对象数据的变化及vue内部的初始化事件 */
   created: function () {
     /* 创建完毕状态 */
-    this.dataItem = this.props.dataItem
+    // this.dataItem = this.props.dataItem
   },
   /**
    * 2.在created和beforeMount之间，判断是否有el选项，若有则继续编译，无，则暂停生命周期；
