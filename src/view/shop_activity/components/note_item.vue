@@ -160,9 +160,9 @@
 import { Base64 } from 'js-base64'
 export default {
   props: {
-      dataItem:{
-          type: [Object, String]
-      }
+    dataItem: {
+      type: [Object, String]
+    }
   },
   data () {
     return {

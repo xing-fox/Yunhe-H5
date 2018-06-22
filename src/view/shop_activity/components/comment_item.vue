@@ -148,10 +148,10 @@
 
 <script>
 export default {
-    props: {
-      dataItem:{
-          type: [Object, String]
-      }
+  props: {
+    dataItem: {
+      type: [Object, String]
+    }
   },
   data () {
     return {
