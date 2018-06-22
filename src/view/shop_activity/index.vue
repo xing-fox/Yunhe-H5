@@ -1,5 +1,5 @@
 <template>
-    <div style="position: relative width: 100%;height: 100%;">
+    <div style="position: relative;width: 100%;height: 100%;">
         <div class="app">
             <div class="shop-activity-banner" :style="{backgroundImage: !content.action.action_video?'url('+content.action.action_picture+')':'none'}">
                 <template v-if="content.action.action_video">
@@ -113,7 +113,7 @@
                 </template>
                 <!--互动区-->
                 <div class="shop-activity-interact" v-if="content.note || content.comment">
-                    
+
                     <div class="shop-activity-arrow-title shop-activity-borderline">
                         <svg class="icon icon-hudongqu" aria-hidden="true">
                             <use xlink:href="#icon-hudongqu"></use>
@@ -123,7 +123,6 @@
                         <i class="arrow fr" >全部&gt;</i>
                         </router-link>
                     </div>
-                    
                     <template v-if="content.note && content.note.length">
                         <noteItem v-for="( item, index ) in content.note" :dataItem="item" v-on:zanClick="zanClick(index,'note')" :key="index" ></noteItem>
                     </template>
@@ -169,30 +168,30 @@
 </template>
 
 <script>
-import commentItem from "./components/comment_item";
-import noteItem from "./components/note_item";
-import writeArea from "./components/writeArea";
-import msg from "../../components/msg";
+import commentItem from './components/comment_item'
+import noteItem from './components/note_item'
+import writeArea from './components/writeArea'
+import msg from '../../components/msg'
 
 export default {
-  name: "shopActivity",
+  name: 'shopActivity',
   components: {
     commentItem,
     noteItem,
     writeArea,
     msg
   },
-  data() {
+  data () {
     return {
-      _dom: "",
+      dom: '',
       isPlay: false,
-      actionId: "",
+      actionId: '',
       writeAreaOpen: false,
       content: {},
-      msgContent: "",
+      msgContent: '',
       msgHide: false,
       getCouponMsg: false
-    };
+    }
   },
   computed: {
     /* 实现某一属性的实时计算 */
@@ -203,72 +202,72 @@ export default {
   methods: {
     /* 组件内部的方法 */
     /* 关闭msg弹框 */
-    closeMsg() {
-      this.msgHide = false;
+    closeMsg () {
+      this.msgHide = false
     },
     /* 点赞事件 */
-    zanClick(index, type) {
-      let that = this;
-      if (type === "note") {
+    zanClick (index, type) {
+      let that = this
+      if (type === 'note') {
         /* 笔记点赞 */
         that.$http
           .like({
             openid:
-              window.localStorage.getItem("openId") ||
-              window.sessionStorage.getItem("openId"),
+              window.localStorage.getItem('openId') ||
+              window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               operate: 2,
-              parameter_id: that.content[type][index][type + "_id"]
+              parameter_id: that.content[type][index][type + '_id']
             })
           })
           .then(res => {
-            if (res.success && res.code === "E00000") {
+            if (res.success && res.code === 'E00000') {
               let flag = parseInt(
-                that.content[type][index][type + "_like_flag"]
-              );
-              that.content[type][index][type + "_like_flag"] = -flag;
-              that.content[type][index][type + "_like_total"] =
-                parseInt(that.content[type][index][type + "_like_total"]) +
-                flag * 1;
+                that.content[type][index][type + '_like_flag']
+              )
+              that.content[type][index][type + '_like_flag'] = -flag
+              that.content[type][index][type + '_like_total'] =
+                parseInt(that.content[type][index][type + '_like_total']) +
+                flag * 1
             }
-          });
+          })
       } else {
         /* 评论点赞 */
         that.$http
           .commentlike({
             openid:
-              window.localStorage.getItem("openId") ||
-              window.sessionStorage.getItem("openId"),
+              window.localStorage.getItem('openId') ||
+              window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               focus_type: 21,
-              comment_id: that.content[type][index][type + "_id"],
-              type: that.content[type][index][type + "_like_flag"]
+              comment_id: that.content[type][index][type + '_id'],
+              type: that.content[type][index][type + '_like_flag']
             })
           })
           .then(res => {
-            if (res.success && res.code === "E00000") {
+            if (res.success && res.code === 'E00000') {
               let flag = parseInt(
-                that.content[type][index][type + "_like_flag"]
-              );
-              that.content[type][index][type + "_like_flag"] = -flag;
-              that.content[type][index][type + "_like_total"] =
-                parseInt(that.content[type][index][type + "_like_total"]) +
-                flag * 1;
+                that.content[type][index][type + '_like_flag']
+              )
+              that.content[type][index][type + '_like_flag'] = -flag
+              that.content[type][index][type + '_like_total'] =
+                parseInt(that.content[type][index][type + '_like_total']) +
+                flag * 1
             }
-          });
+          })
       }
     },
     /* 评论提交后的事件 */
-    writeSubmit(data) {
-      this.writeAreaOpen = false;
+    writeSubmit (data) {
+      this.writeAreaOpen = false
       if (data[0]) {
-        let that = this;
+        let that = this
         /* 刷新评论数据 */
         that.$http
           .ShopActionDetailNoteComment({
             openid:
-              window.localStorage.getItem("openId") ||
-              window.sessionStorage.getItem("openId"),
+              window.localStorage.getItem('openId') ||
+              window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               note_pag_no: 1,
               note_pag_num: 5,
@@ -278,94 +277,94 @@ export default {
             })
           })
           .then(res => {
-            if (res.success && res.code === "E00000") {
+            if (res.success && res.code === 'E00000') {
               if (res.content.comment && res.content.comment.length > 0) {
-                that.content.comment = res.content.comment;
+                that.content.comment = res.content.comment
               }
               if (res.content.note && res.content.note.length > 0) {
-                that.content.note = res.content.note;
+                that.content.note = res.content.note
               }
             }
-          });
+          })
       }
     },
     /* 点击我要参加活动事件 */
-    goJoin() {
+    goJoin () {
       if (this.content.action.action_join_flag === -1) {
-        return false;
+        return false
       } else {
-        let that = this;
+        let that = this
         that.$http
           .joinShopAction({
             openid:
-              window.localStorage.getItem("openId") ||
-              window.sessionStorage.getItem("openId"),
+              window.localStorage.getItem('openId') ||
+              window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               action_id: that.actionId
             })
           })
           .then(res => {
-            if (res.success && res.code === "E00000") {
-              that.content.action.action_join_flag = -1;
+            if (res.success && res.code === 'E00000') {
+              that.content.action.action_join_flag = -1
               that.content.action.join_total_f =
-                parseInt(that.content.action.join_total_f) + 1;
-              that.msgContent = "您已参加活动";
-              that.msgHide = true;
+                parseInt(that.content.action.join_total_f) + 1
+              that.msgContent = '您已参加活动'
+              that.msgHide = true
             }
-          });
+          })
       }
     },
     /* 领取优惠劵 */
-    getCoupon() {
-      let that = this;
-      console.log("领取优惠券"+window.localStorage.getItem("openId"))
+    getCoupon () {
+      let that = this
+      console.log('领取优惠券' + window.localStorage.getItem('openId'))
       that.$http
         .getShopActionCoupon({
           openid:
-            window.localStorage.getItem("openId") ||
-            window.sessionStorage.getItem("openId"),
+            window.localStorage.getItem('openId') ||
+            window.sessionStorage.getItem('openId'),
           data: JSON.stringify({
             action_id: that.actionId,
             coupon_standard_id: that.content.coupon[0].coupon_id
           })
         })
         .then(res => {
-          if (res.success && res.code === "E00000") {
-            that.getCouponMsg = true;
-          }else{
-              that.msgContent = res.msg;
-              that.msgHide = true;
+          if (res.success && res.code === 'E00000') {
+            that.getCouponMsg = true
+          } else {
+            that.msgContent = res.msg
+            that.msgHide = true
           }
-        });
+        })
     },
     /* 视频按钮点击播放 */
-    videoBtnPlay() {
-      this._dom = document.getElementById("videoPlay");
-      this._dom.play();
+    videoBtnPlay () {
+      this.dom = document.getElementById('videoPlay')
+      this.dom.play()
     },
     /* 视频按钮停止播放触发事件 */
-    videoPause() {
-      this.isPlay = false;
+    videoPause () {
+      this.isPlay = false
     },
     /* 视频按钮播放时触发事件 */
-    videoPlay() {
-      this.isPlay = true;
+    videoPlay () {
+      this.isPlay = true
     }
   },
-  beforeCreate: function() {
+  beforeCreate: function () {
     /* 创建前状态 */
   },
   /* 1.在beforeCreate和created钩子之间，程序开始监控Data对象数据的变化及vue内部的初始化事件 */
-  created: function() {
+  created: function () {
     /* 创建完毕状态 */
-    this.actionId = this.$route.query.action_id;
-    console.log(this.$route.query);
-    let that = this;
+    this.actionId = this.$route.query.action_id
+    console.log(this.$route.query)
+    let that = this
     that.$http
       .ShopActionDetail({
         openid:
-          window.localStorage.getItem("openId") ||
-          window.sessionStorage.getItem("openId"),
+          window.localStorage.getItem('openId') ||
+          window.sessionStorage.getItem('openId'),
         data: JSON.stringify({
           note_pag_no: 1,
           note_pag_num: 5,
@@ -375,50 +374,50 @@ export default {
         })
       })
       .then(res => {
-        if (res.success && res.code === "E00000") {
-          that.content = res.content;
+        if (res.success && res.code === 'E00000') {
+          that.content = res.content
         }
-      });
+      })
   },
   /**
    * 2.在created和beforeMount之间，判断是否有el选项，若有则继续编译，无，则暂停生命周期；
    * 然后程序会判断是否有templete参数选项，若有，则将其作为模板编译成render函数。若无，则将外部html作为模板编译（template优先级比外部html高）*
    * */
-  beforeMount: function() {
+  beforeMount: function () {
     /* 载入前状态 */
   },
   /**
    * 3.在beforeMount和mounted之间，程序将上一步编辑好的html内容替换el属性指向的dom对象或者选择权对应的html标签里面的内容
    *
    * */
-  mounted: function() {
+  mounted: function () {
     /* 载入后状态 */
   },
   /**
    * 4.mounted和beforeUpdate之间，程序实时监控数据变化
    *
    * */
-  beforeUpdate: function() {
+  beforeUpdate: function () {
     /* 更新前状态 */
   },
   /**
    * 5.beforeUpdate和updated之间，实时更新dom
    *
    * */
-  updated: function() {
+  updated: function () {
     /* 更新后状态 */
   },
-  beforeDestroy: function() {
+  beforeDestroy: function () {
     /* 销毁前状态 */
   },
   /**
    * 6.实例销毁
    *
    * */
-  destroyed: function() {
+  destroyed: function () {
     /* 销毁后状态 */
   }
-};
+}
 </script>
 
 <style scoped lang="less">

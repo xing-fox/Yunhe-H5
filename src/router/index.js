@@ -185,13 +185,15 @@ export default new Router({
       component: shopActivity,
       meta: {
         title: '门店详情'
-      },
-      children: [
-        {
-          path: 'commentArea',
-          component: commentArea
-        }
-      ]
+      }
+    },
+    {
+      path: '/wechat_pub/shopActivity/commentArea',
+      name: 'shopActivity',
+      component: commentArea,
+      meta: {
+        title: '门店详情评论区'
+      }
     }
   ]
 })
