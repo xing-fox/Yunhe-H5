@@ -119,7 +119,7 @@
                             <use xlink:href="#icon-hudongqu"></use>
                         </svg>
                         <span class="arrow-text">互动区</span>
-                        <router-link :to="{ path:'shopActivity/commentArea'}">
+                        <router-link :to="{ path:'/wechat_pub/shopActivity/commentArea',query:{action_id:actionId}}">
                         <i class="arrow fr" >全部&gt;</i>
                         </router-link>
                     </div>
