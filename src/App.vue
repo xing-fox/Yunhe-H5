@@ -31,8 +31,8 @@ export default {
 //  }).catch(err => {
 //    console.log(err)
 //  })
-    	window.localStorage.setItem('openId', 'oGJVJ5HcsYHWnq-NGlxWE3jcKpRA')
-	console.log(window.localStorage.getItem('openId'))
+    window.localStorage.setItem('openId', 'oGJVJ5HcsYHWnq-NGlxWE3jcKpRA')
+	  console.log(window.localStorage.getItem('openId'))
 
   },
   computed: {

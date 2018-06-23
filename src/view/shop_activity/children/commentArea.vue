@@ -122,14 +122,14 @@ export default {
               window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               operate: 2,
-              parameter_id: that[type][index][type + '_id']
+              parameter_id: that.note[index][type + '_id']
             })
           })
           .then(res => {
             if (res.success && res.code === 'E00000') {
-              let flag = parseInt(that[type][index][type + '_like_flag'])
-              that[type][index][type + '_like_flag'] = -flag
-              that[type][index][type + '_like_total'] = parseInt(that[type][index][type + '_like_total']) + flag * 1
+              let flag = parseInt(that.note[index][type + '_like_flag'])
+              that.note[index][type + '_like_flag'] = -flag
+              that.note[index][type + '_like_total'] = parseInt(that.note[index][type + '_like_total']) + flag * 1
             }
           })
       } else {
@@ -141,16 +141,16 @@ export default {
               window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               focus_type: 21,
-              comment_id: that[type][index][type + '_id'],
-              type: that[type][index][type + '_like_flag']
+              comment_id: that.comment[index][type + '_id'],
+              type: that.comment[index][type + '_like_flag']
             })
           })
           .then(res => {
             if (res.success && res.code === 'E00000') {
-              let flag = parseInt(that[type][index][type + '_like_flag'])
-              that[type][index][type + '_like_flag'] = -flag
-              that[type][index][type + '_like_total'] =
-                parseInt(that[type][index][type + '_like_total']) + flag * 1
+              let flag = parseInt(that.comment[index][type + '_like_flag'])
+              that.comment[index][type + '_like_flag'] = -flag
+              that.comment[index][type + '_like_total'] =
+                parseInt(that.comment[index][type + '_like_total']) + flag * 1
             }
           })
       }
@@ -199,7 +199,6 @@ export default {
         })
     },
     scrollFunc () {
-      console.log('滑动')
       if (
         this.$refs.shopBox.scrollTop + document.body.clientHeight + 50 >
           this.$refs.shopBox.scrollHeight &&
@@ -208,7 +207,6 @@ export default {
         this.noMoreComments = true
         this.pageNub++
         this.init()
-        console.log('滑动到底')
       }
     }
   },

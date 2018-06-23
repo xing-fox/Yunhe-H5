@@ -223,17 +223,17 @@ export default {
               window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               operate: 2,
-              parameter_id: that.content[type][index][type + '_id']
+              parameter_id: that.note[index][type + '_id']
             })
           })
           .then(res => {
             if (res.success && res.code === 'E00000') {
               let flag = parseInt(
-                that.content[type][index][type + '_like_flag']
+                that.note[index][type + '_like_flag']
               )
-              that.content[type][index][type + '_like_flag'] = -flag
-              that.content[type][index][type + '_like_total'] =
-                parseInt(that.content[type][index][type + '_like_total']) +
+              that.note[index][type + '_like_flag'] = -flag
+              that.note[index][type + '_like_total'] =
+                parseInt(that.note[index][type + '_like_total']) +
                 flag * 1
             }
           })
@@ -246,18 +246,18 @@ export default {
               window.sessionStorage.getItem('openId'),
             data: JSON.stringify({
               focus_type: 21,
-              comment_id: that.content[type][index][type + '_id'],
-              type: that.content[type][index][type + '_like_flag']
+              comment_id: that.comment[index][type + '_id'],
+              type: that.comment[index][type + '_like_flag']
             })
           })
           .then(res => {
             if (res.success && res.code === 'E00000') {
               let flag = parseInt(
-                that.content[type][index][type + '_like_flag']
+                that.comment[index][type + '_like_flag']
               )
-              that.content[type][index][type + '_like_flag'] = -flag
-              that.content[type][index][type + '_like_total'] =
-                parseInt(that.content[type][index][type + '_like_total']) +
+              that.comment[index][type + '_like_flag'] = -flag
+              that.comment[index][type + '_like_total'] =
+                parseInt(that.comment[index][type + '_like_total']) +
                 flag * 1
             }
           })
