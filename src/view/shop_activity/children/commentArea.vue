@@ -216,7 +216,6 @@ export default {
   /* 1.在beforeCreate和created钩子之间，程序开始监控Data对象数据的变化及vue内部的初始化事件 */
   created: function () {
     /* 创建完毕状态 */
-
     this.actionId = this.$route.query.action_id
     console.log(this.$route.query)
     this.pageNub = 1
